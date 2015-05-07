@@ -1,0 +1,24 @@
+{% extends "print_base.html" %}
+{% block extra_javascript %}
+<script>
+function successCallback(data) {
+        $('#emergencyContactFiller').html(data.emc);
+}
+$(document).ready(function() {
+    $.ajax({
+        url: 'https://www.carthage.edu/emergency/contact/json/',
+        type: 'GET',
+        dataType: 'jsonp',
+        cache: false,
+        jsonpCallbackString:successCallback,
+        error:function(xhr, ajaxOptions, thrownError) {
+                //alert("ERROR: "+ thrownError);
+        }
+    },"json");
+});
+</script>
+{% endblock %}
+{% block content %}
+<div id="emergencyContactFiller">
+</div>
+{% endblock %}
