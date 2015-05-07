@@ -5,5 +5,5 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^contact/', include('emergency.contact.urls')),
+    (r'^contact/', include('djmaidez.contact.urls')),
 )
