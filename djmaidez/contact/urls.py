@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from django.views.generic import TemplateView
 
-urlpatterns = patterns('emergency.contact.views',
+urlpatterns = patterns('djmaidez.contact.views',
     url(
         r'^$',
         TemplateView.as_view(template_name="contact/home.html")
