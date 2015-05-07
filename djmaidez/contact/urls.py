@@ -1,8 +1,12 @@
 from django.conf.urls.defaults import *
+from django.views.generic import TemplateView
 
-urlpatterns = patterns('',
-     url(r'^contact/$', 'emergency.contact.views.home', name="home"),
-     url(r'^contact/json/$', 'emergency.contact.views.json', name="json"),
-     url(r'^contact/save/$', 'emergency.contact.views.save', name="save"),
-     url(r'^contact/populate/$', 'emergency.contact.views.populate', name="populate"),
+urlpatterns = patterns('emergency.contact.views',
+    url(
+        r'^$',
+        TemplateView.as_view(template_name="contact/home.html")
+    ),
+    url(r'^json/$', 'json', name="json"),
+    url(r'^save/$', 'save', name="save"),
+    url(r'^populate/$', 'populate', name="populate"),
 )

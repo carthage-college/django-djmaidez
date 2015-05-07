@@ -1,10 +1,12 @@
-{% extends "print_base.html" %}
+{% extends "base.html" %}
 {% block extra_javascript %}
 <script>
+
 function successCallback(data) {
         $('#emergencyContactFiller').html(data.emc);
 }
 $(document).ready(function() {
+
     $.ajax({
         url: 'https://www.carthage.edu/emergency/contact/json/',
         type: 'GET',
@@ -15,6 +17,7 @@ $(document).ready(function() {
                 //alert("ERROR: "+ thrownError);
         }
     },"json");
+
 });
 </script>
 {% endblock %}

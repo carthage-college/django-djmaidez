@@ -1,5 +1,9 @@
 from django.conf.urls import patterns, include, url
 
+# Uncomment the next two lines to enable the admin:
+# from django.contrib import admin
+# admin.autodiscover()
+
 urlpatterns = patterns('',
-    (r'^', include('emergency.contact.urls')),
+    (r'^contact/', include('emergency.contact.urls')),
 )
