@@ -1,13 +1,25 @@
-import os
+import os, sys
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "emergency.settings")
-
-# This application object is used by any WSGI server configured to use this
-# file. This includes Django's development server, if the WSGI_APPLICATION
-# setting points here.
+# Python
+sys.path.append('/usr/lib/python2.7/')
+sys.path.append('/usr/lib/python2.7/dist-packages/')
+sys.path.append('/usr/local/lib/python2.7/dist-packages/')
+sys.path.append('/data2/django_current/')
+sys.path.append('/data2/django_projects/')
+sys.path.append('/data2/django_third/')
+# Django
+os.environ['DJANGO_SETTINGS_MODULE'] = 'emergency.settings'
+os.environ.setdefault("PYTHON_EGG_CACHE", "/var/cache/python/.python-eggs")
+os.environ.setdefault("TZ", "America/Chicago")
+# informix
+os.environ['INFORMIXSERVER'] = ''
+os.environ['DBSERVERNAME'] = ''
+os.environ['INFORMIXDIR'] = ''
+os.environ['ODBCINI'] = ''
+os.environ['ONCONFIG'] = ''
+os.environ['INFORMIXSQLHOSTS'] = ''
+os.environ['LD_LIBRARY_PATH'] = ''
+os.environ['LD_RUN_PATH'] = ''
+# wsgi
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-
-# Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)

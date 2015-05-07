@@ -10,7 +10,7 @@ import datetime
 
 def json(request):
     """
-    Called from an iframe in portal.
+    Called from javascript file fill.js
     """
     template = "contact/home.html"
     t = loader.get_template(template)
