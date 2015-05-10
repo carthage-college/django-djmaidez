@@ -548,27 +548,22 @@ function checkIfStale(end_date) {
 function getSubdomain() {
     var fqdn = window.location.host
     var subdomain = fqdn.split('.')[0]
-    if (!subdomain) {
+    if (!subdomain || subdomain == "my") {
         var subdomain = "www";
     }
-    console.log(subdomain);
     return subdomain;
 }
 
 function doneRendering() {
     var subdomain = getSubdomain();
-    console.log("subdomain = " + subdomain);
     if(!isNaN(GetUserID())) {
         $.ajax({
             url:'https://' + subdomain + '.carthage.edu/emergency/contact/populate/?UserID='+GetUserID(),
             type:'GET',
             dataType:'jsonp',
             cache:false,
-            jsonpCallbackString:jsonResponcePopulate,
-            error:function(xhr, ajaxOptions, thrownError) {
-                console.log("ERROR: "+ thrownError);
-            }
-        },"json");
+            jsonpCallbackString:jsonResponcePopulate
+        });
     }
 
     $("#ens_form_button").click(function() {
