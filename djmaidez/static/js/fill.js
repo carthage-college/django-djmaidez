@@ -461,8 +461,9 @@ function jsonResponcePopulate(data) {
     $("#ICE2_PHONE2").val(data.ICE2.line2);
     $("#ICE2_PHONE3").val(data.ICE2.line3);
     $("#ICE2_REL").val(data.ICE2.cell_carrier);
-
-    checkIfStale(data.ENS.end_date);
+    if (data.ENS.end_date) {
+        checkIfStale(data.ENS.end_date);
+    }
 }
 function makeDialog() {
     changeStyle('emergency_index');
