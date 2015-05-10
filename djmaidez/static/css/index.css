@@ -1,55 +1,53 @@
 #main_modal {
     font-size:72.5%;
     background:#eee;
-} 
+}
 .ui-widget-header {
-    background:#880000; 
+    background:#880000;
     color:#fff;
     font-size:.9em;
-} 
+}
 fieldset {
     background:#fff;
-} 
+}
 .header {
     font-size:1.4em;
     font-weight:bold;
     color:#880000;
     background:#fff;
-    padding:4px 30px; 
+    padding:4px 30px;
     border:1px solid #bbb;
-} 
+}
 .ui-state-default {
     background:#ff9;
-} 
+}
 h2 {
     font-size:.9em;
     padding:0;
     margin:0;
-} 
-.ui-widget-overlay{ 
+}
+.ui-widget-overlay{
     opacity: .80;
-    filter:Alpha(Opacity=80); 
-} 
+    filter:Alpha(Opacity=80);
+}
 #asterisk {
         color:red
-} 
+}
 .phone {
     width:140px;
-} 
+}
 .name {
     width:250px;
-} 
+}
 p {
     margin:0 0 .5em 0;
-} 
+}
 #instructions p, #instructions li {
     font-size:110%;
-} 
+}
 #instructions li {
-    list-style-type: square; 
+    list-style-type: square;
     margin-left:2em;
     margin-bottom:1em;
-} 
-#missing, #missingheader {
-    
 }
+#missing, #missingheader {}
