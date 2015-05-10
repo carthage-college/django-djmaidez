@@ -48,103 +48,17 @@
                     </td>
                     <td colspan="2">
                         <input type="text" class="phone" name="ENS_SELF_CELL"
-                            id="ENS_SELF_CELL" />
+                            id="ENS_SELF_CELL" value="{{ENS.phone}}" />
                         <select name="ENS_CARRIER" id="ENS_CARRIER">
-                            <option value="">choose...</option>
-                            <option value="1">AT&T</option>
-                            <option value="2">Verizon Wireless</option>
-                            <option value="3">U.S Cellular</option>
-                            <option value="4">Boost Mobile</option>
-                            <option value="5">Cricket</option>
-                            <option value="6">Sprint PCS</option>
-                            <option value="7">T-Mobile</option>
-                            <option value="8">Virgin Mobile</option>
-                            <option value="9">Airpage</option>
-                            <option value="10">Alaska Communication Systems</option>
-                            <option value="11">Aliant</option>
-                            <option value="12">Alltel</option>
-                            <option value="13">American Messaging</option>
-                            <option value="14">Ampd Mobile</option>
-                            <option value="15">Appalachian Wireless</option>
-                            <option value="16">Aquis Communications</option>
-                            <option value="17">Arch</option>
-                            <option value="18">AT&T (Legacy)</option>
-                            <option value="19">ATS Beep</option>
-                            <option value="20">Bell Canada</option>
-                            <option value="21">Bluegrass Cellular</option>
-                            <option value="22">Boost</option>
-                            <option value="23">Capcom Pager (Thurston)</option>
-                            <option value="24">Carolina West Wireless</option>
-                            <option value="25">Cellcom</option>
-                            <option value="26">Cellular One</option>
-                            <option value="27">Cellular One (Alternate)</option>
-                            <option value="28">Cellular One Illinois (Regional)</option>
-                            <option value="29">Cellular South</option>
-                            <option value="30">CellularOne of Northeast Pennsylvania</option>
-                            <option value="31">CellularOne of SLO</option>
-                            <option value="32">Centennial Wireless</option>
-                            <option value="33">Chariton Valley Wireless Service</option>
-                            <option value="34">Chat Mobility</option>
-                            <option value="35">Cincinnati Bell Wireless</option>
-                            <option value="36">Consumer Cellular</option>
-                            <option value="37">Contact Wireless</option>
-                            <option value="38">Cook Paging</option>
-                            <option value="39">Cox Communications</option>
-                            <option value="40">Credo Mobile</option>
-                            <option value="41">Cricket (Alternate)</option>
-                            <option value="42">Cricket (MMS)</option>
-                            <option value="43">CVC Paging</option>
-                            <option value="44">Dobson</option>
-                            <option value="45">Edge Wireless</option>
-                            <option value="46">Einstein Wireless</option>
-                            <option value="47">Five Star Wireless</option>
-                            <option value="48">GCI </option>
-                            <option value="49">Hargray Wireless</option>
-                            <option value="50">Helio</option>
-                            <option value="51">Illinois Valley Cellular</option>
-                            <option value="52">Immix/Keystone Wireless</option>
-                            <option value="53">Indigo Wireless</option>
-                            <option value="54">Inland Cellular </option>
-                            <option value="55">iWireless</option>
-                            <option value="56">Metro PCS</option>
-                            <option value="57">Metrocall</option>
-                            <option value="58">Mid-Tex Cellular</option>
-                            <option value="59">NE Penn Telephone</option>
-                            <option value="60">Net10</option>
-                            <option value="61">Nex-Tech Wireless</option>
-                            <option value="62">Nextel</option>
-                            <option value="63">Northwest Missouri Cellular</option>
-                            <option value="64">nTelos</option>
-                            <option value="65">Panhandle Telephone</option>
-                            <option value="66">Pioneer Telephone</option>
-                            <option value="67">Plateau Telecommunications</option>
-                            <option value="68">Pocket Communications</option>
-                            <option value="69">Propage Pager</option>
-                            <option value="70">Qwest</option>
-                            <option value="71">RCS Wireless</option>
-                            <option value="72">Revol Wireless</option>
-                            <option value="73">Rogers Canada</option>
-                            <option value="74">Rural Cellular Corporation</option>
-                            <option value="75">Sasktel</option>
-                            <option value="76">Schuylkill Mobile Fone</option>
-                            <option value="77">Singtel</option>
-                            <option value="78">SkyTel</option>
-                            <option value="79">SouthernLINC</option>
-                            <option value="80">Sprint PCS (Alternate)</option>
-                            <option value="81">SunCom / Triton</option>
-                            <option value="82">T-Mobile (Pre-Paid)</option>
-                            <option value="83">Teletouch Paging</option>
-                            <option value="84">Telus</option>
-                            <option value="85">Thumb Cellular</option>
-                            <option value="86">Tracfone</option>
-                            <option value="87">Unicel</option>
-                            <option value="88">United Wireless </option>
-                            <option value="89">USA Mobility</option>
-                            <option value="90">Verizon Wireless (Alternate)</option>
-                            <option value="91">Viaero Wireless</option>
-                            <option value="92">WCC</option>
-                            <option value="93">WCS Communications</option>
-                            <option value="94">West Central Wireless</option>
+                            {% for val,txt in mobile_carrier %}
+                                <option value="{{val}}"
+                                    {% if ENS.cell_carrier == val %}
+                                    selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{txt}}
+                                </option>
+                            {% endfor %}
                         </select>
                     </td>
                 </tr>
@@ -153,10 +67,10 @@
                         Can you receive text messages at this number?
                     </td>
                     <td colspan="2">
-                        <input type="radio" name="ENS_SMS"
-                            id="ENS_SMS" value="1"/> yes
-                        <input type="radio" name="ENS_SMS"
-                            id="ENS_SMS" value="0"/> no
+                        <input type="radio" name="ENS_SMS" id="ENS_SMS" value="1"
+                            {% if ENS.opt_out == "1" %}checked{% endif %} /> yes
+                        <input type="radio" name="ENS_SMS" id="ENS_SMS" value="0"
+                            {% if ENS.opt_out == "0" %}checked{% endif %} /> no
                     </td>
                 </tr>
                 <tr>
@@ -166,7 +80,7 @@
                     </td>
                     <td colspan="2">
                         <input type="text" class="name" name="ENS_EMAIL"
-                            id="ENS_EMAIL" />
+                            id="ENS_EMAIL" value="{{ENS.line1}}" />
                     </td>
                 </tr>
             </table>
@@ -189,23 +103,23 @@
                     </td>
                     <td>
                         <input type="text" name="MIS1_NAME" class="name"
-                            id="MIS1_NAME" />
+                            id="MIS1_NAME" value="{{MIS1.line1}}" />
                     </td>
                     <td align="right">
                         <span id="asterisk">*</span>
-                        Relationship
+                        Relationship {{MIS1.cell_carrier}}
                     </td>
                     <td>
                         <select name="MIS1_REL" id="MIS1_REL">
-                            <option value="">choose...</option>
-                            <option value="PC">Parent</option>
-                            <option value="HW">Husband/Wife</option>
-                            <option value="GPGC">Grandparent</option>
-                            <option value="SBSB">Sibling</option>
-                            <option value="FRFR">Friend</option>
-                            <option value="SOSO">Significant Other</option>
-                            <option value="AUNN">Aunt/Uncle</option>
-                            <option value="OTHR">Other</option>
+                            {% for val,txt in relationship %}
+                                <option value="{{val}}"
+                                    {% if MIS1.cell_carrier == val %}
+                                    selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{txt}}
+                                </option>
+                            {% endfor %}
                         </select>
                     </td>
                 </tr>
@@ -216,7 +130,7 @@
                     </td>
                     <td colspan="3">
                         <input type="text" name="MIS1_PHONE1" id="MIS1_PHONE1"
-                            class="phone" />
+                            class="phone" value="{{MIS1.phone}}" />
                     </td>
                 </tr>
                 <tr>
@@ -225,14 +139,14 @@
                     </td>
                     <td>
                         <input type="text" name="MIS1_PHONE2" id="MIS1_PHONE2"
-                            class="phone" />
+                            class="phone" value="{{MIS1.line2}}" />
                     </td>
                     <td align="right" nowrap="nowrap">
                         Their evening phone
                     </td>
                     <td>
                         <input type="text" name="MIS1_PHONE3" id="MIS1_PHONE3"
-                            class="phone" />
+                            class="phone" value="{{MIS1.line3}}" />
                     </td>
                 </tr>
                 <tr>
@@ -244,14 +158,14 @@
                     </td>
                     <td>
                         <input type="text" name="MIS2_NAME" id="MIS2_NAME"
-                            class="name" />
+                            class="name" value="{{MIS2.line1}}" />
                     </td>
                     <td align="right">
                         Phone
                     </td>
                     <td>
                         <input type="text" name="MIS2_PHONE1" id="MIS2_PHONE1"
-                            class="phone" />
+                            class="phone" value="{{MIS2.phone}}" />
                     </td>
                 </tr>
                 <tr>
@@ -263,14 +177,14 @@
                     </td>
                     <td>
                         <input type="text" name="MIS3_NAME" id="MIS3_NAME"
-                            class="name" />
+                            class="name" value="{{MIS3.line1}}" />
                     </td>
                     <td align="right">
                         Phone
                     </td>
                     <td>
                         <input type="text" name="MIS3_PHONE1" id="MIS3_PHONE1"
-                            class="phone" />
+                            class="phone" value="{{MIS3.phone}}" />
                     </td>
                 </tr>
             </table>
@@ -299,23 +213,22 @@
                     </td>
                     <td>
                         <input type="text" name="ICE_NAME" id="ICE_NAME"
-                            class="name" />
+                            class="name" value="{{ICE.line1}}" />
                     </td>
                     <td align="right">
                         <span id="asterisk">*</span>
-                        Relationship
                     </td>
                     <td>
                         <select name="ICE_REL" id="ICE_REL">
-                            <option value="">choose...</option>
-                            <option value="PC">Parent</option>
-                            <option value="HW">Husband/Wife</option>
-                            <option value="GPGC">Grandparent</option>
-                            <option value="SBSB">Sibling</option>
-                            <option value="FRFR">Friend</option>
-                            <option value="SOSO">Significant Other</option>
-                            <option value="AUNN">Aunt/Uncle</option>
-                            <option value="OTHR">Other</option>
+                            {% for val,txt in relationship %}
+                                <option value="{{val}}"
+                                    {% if ICE.cell_carrier == val %}
+                                    selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{txt}}
+                                </option>
+                            {% endfor %}
                         </select>
                     </td>
                 </tr>
@@ -326,7 +239,7 @@
                     </td>
                     <td colspan="3">
                         <input type="text" name="ICE_PHONE1" id="ICE_PHONE1"
-                            class="phone"  />
+                            class="phone" value="{{ICE.phone}}" />
                     </td>
                 </tr>
                 <tr>
@@ -335,14 +248,14 @@
                     </td>
                     <td>
                         <input type="text" name="ICE_PHONE2" id="ICE_PHONE2"
-                            class="phone" />
+                            class="phone" value="{{ICE.line2}}" />
                     </td>
                     <td align="right">
                         Their evening phone
                     </td>
                     <td>
                         <input type="text" name="ICE_PHONE3" id="ICE_PHONE3"
-                            class="phone" />
+                            class="phone" value="{{ICE.line3}}" />
                     </td>
                 </tr>
                 <tr>
@@ -359,45 +272,47 @@
                     <td>Name</td>
                     <td>
                         <input type="text" name="ICE2_NAME" id="ICE2_NAME"
-                            class="name" />
+                            class="name" value="{{ICE2.line1}}" />
                     </td>
-                    <td align="right">Relationship</td><td>
+                    <td align="right">Relationship</td>
+                    <td>
                         <select name="ICE2_REL" id="ICE2_REL">
-                            <option value="">choose...</option>
-                            <option value="PC">Parent</option>
-                            <option value="HW">Husband/Wife</option>
-                            <option value="GPGC">Grandparent</option>
-                            <option value="SBSB">Sibling</option>
-                            <option value="FRFR">Friend</option>
-                            <option value="SOSO">Sighificant Other</option>
-                            <option value="AUNN">Aunt/Uncle</option>
-                            <option value="OTHR">Other</option>
+                            {% for val,txt in relationship %}
+                                <option value="{{val}}"
+                                    {% if ICE2.cell_carrier == val %}
+                                    selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{txt}}
+                                </option>
+                            {% endfor %}
                         </select>
-                        </td>
+                    </td>
                 </tr>
                 <tr>
                     <td>Their cell phone</td>
                     <td colspan="3">
-                        <input type="text" name="ICE2_PHONE1"
-                            id="ICE2_PHONE1" class="phone"  />
+                        <input type="text" name="ICE2_PHONE1" id="ICE2_PHONE1"
+                            class="phone" value="{{ICE2.phone}}" />
                     </td>
                 </tr>
                 <tr>
                     <td>Their daytime phone</td>
                     <td>
-                        <input type="text" name="ICE2_PHONE2"
-                            id="ICE2_PHONE2" class="phone" />
+                        <input type="text" name="ICE2_PHONE2" id="ICE2_PHONE2"
+                            class="phone" value="{{ICE2.line2}}" />
                     </td>
                     <td align="right">
                         Their evening phone
                     </td>
                     <td>
-                        <input type="text" name="ICE2_PHONE3"
-                            id="ICE2_PHONE3" class="phone" />
+                        <input type="text" name="ICE2_PHONE3" id="ICE2_PHONE3"
+                            class="phone" value="{{ICE2.line3}}" />
                     </td>
                 </tr>
             </table>
         </fieldset>
+        {% if not solo %}
         <div class="header">What if this information changes?</div>
         <fieldset id="later">
             <p>
@@ -408,7 +323,10 @@
                 </a>.
             </p>
         </fieldset>
+        {% endif %}
     </div>
 </div>
+{% if not solo %}
 <button type="button" id="ens_form_button">Edit Emergency Contacts</button>
+{% endif %}
 {% endspaceless %}
