@@ -309,10 +309,6 @@ def solo(request):
     data["mobile_carrier"] = MOBILE_CARRIER
     data["relationship"] = RELATIONSHIP
     data["solo"] = True
-    return render_to_response(
-        "contact/home.html", data,
-        context_instance=RequestContext(request)
-    )
 
     return render_to_response(
         "contact/solo.html",
