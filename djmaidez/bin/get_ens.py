@@ -18,7 +18,9 @@ for c in CODES:
     for f in FIELDS:
         try:
             if result[f]:
-                ens += "%s = %s\n" % (f,result[f])
+                ens += "%s = %s\n" % (f, result[f])
+            else:
+                ens += "%s = \n" % (f)
         except:
             ens += "%s = \n" % (f)
     print ens

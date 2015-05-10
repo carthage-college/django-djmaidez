@@ -85,7 +85,7 @@ def save(request):
 
     if MIS1_NAME != '':
         try:
-            mis1 = session.query(AARec).filter_by(id=cid).\
+            mis1 = session.query(AARec).filter_by(id=HOSTID).\
                 filter_by(aa="MIS1").one()
             sql = """
                 UPDATE
@@ -122,7 +122,7 @@ def save(request):
 
     if MIS2_NAME != '':
         try:
-            mis2 = session.query(AARec).filter_by(id=cid).\
+            mis2 = session.query(AARec).filter_by(id=HOSTID).\
                 filter_by(aa="MIS2").one()
             sql = """
                 UPDATE
@@ -155,7 +155,7 @@ def save(request):
 
     if MIS3_NAME != '':
         try:
-            mis3 = session.query(AARec).filter_by(id=cid).\
+            mis3 = session.query(AARec).filter_by(id=HOSTID).\
                 filter_by(aa="MIS3").one()
             sql = """
                 UPDATE
@@ -188,7 +188,7 @@ def save(request):
 
     if ENS_SMS != '':
         try:
-            ens = session.query(AARec).filter_by(id=cid).\
+            ens = session.query(AARec).filter_by(id=HOSTID).\
                 filter_by(aa="ENS").one()
             sql = """
                 UPDATE
@@ -223,7 +223,7 @@ def save(request):
 
     if ICE_NAME != '':
         try:
-            ice = session.query(AARec).filter_by(id=cid).\
+            ice = session.query(AARec).filter_by(id=HOSTID).\
                 filter_by(aa="ICE").one()
             sql = """
                 UPDATE
@@ -258,7 +258,7 @@ def save(request):
 
     if ICE2_NAME != '':
         try:
-            ice2 = session.query(AARec).filter_by(id=cid).\
+            ice2 = session.query(AARec).filter_by(id=HOSTID).\
                 filter_by(aa="ENS").one()
             sql = """
                 UPDATE
