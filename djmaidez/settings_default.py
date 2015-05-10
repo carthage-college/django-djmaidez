@@ -75,7 +75,13 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_DIRS = (
     "/d2/django_projects/emergency/templates/",
 )
-
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "djtools.context_processors.sitevars",
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.request",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.media",
+)
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
