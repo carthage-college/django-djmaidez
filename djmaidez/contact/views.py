@@ -27,7 +27,7 @@ def json(request):
     """
     Called from javascript file fill.js
     """
-    template = "contact/home.html"
+    template = "contact/modal.html"
     t = loader.get_template(template)
     c = RequestContext(request)
     page = t.render(c)

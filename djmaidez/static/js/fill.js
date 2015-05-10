@@ -401,7 +401,7 @@ function isValid() {
         if(!mis3NameValidation())
         errors = errors + "\nPlease check the 'in case of missing' contact 3 name.";
     }
-    
+
     if (errors != "") {
         alert(errors);
         return false;
@@ -545,15 +545,30 @@ function checkIfStale(end_date) {
         }
 }
 
+function getSubdomain() {
+    var fqdn = window.location.host
+    var subdomain = fqdn.split('.')[0]
+    if (!subdomain) {
+        var subdomain = "www";
+    }
+    console.log(subdomain);
+    return subdomain;
+}
+
 function doneRendering() {
+    var subdomain = getSubdomain();
+    console.log("subdomain = " + subdomain);
     if(!isNaN(GetUserID())) {
         $.ajax({
-             url:'https://www.carthage.edu/emergency/contact/populate/?UserID='+GetUserID(),
-             type:'GET',
-             dataType:'jsonp',
-             cache:false,
-             jsonpCallbackString:jsonResponcePopulate
-        });
+            url:'https://' + subdomain + '.carthage.edu/emergency/contact/populate/?UserID='+GetUserID(),
+            type:'GET',
+            dataType:'jsonp',
+            cache:false,
+            jsonpCallbackString:jsonResponcePopulate,
+            error:function(xhr, ajaxOptions, thrownError) {
+                console.log("ERROR: "+ thrownError);
+            }
+        },"json");
     }
 
     $("#ens_form_button").click(function() {
@@ -572,10 +587,11 @@ function successCallback(data) {
 }
 
 $(document).ready(function() {
+    var subdomain = getSubdomain();
     $.getScript("https://raw.githubusercontent.com/digitalBush/jquery.maskedinput/1.4.0/dist/jquery.maskedinput.min.js", function(){ });
     //JSONP call to get the form and button from Django
     $.ajax({
-        url: 'https://www.carthage.edu/emergency/contact/json/',
+        url: 'https://' + subdomain + '.carthage.edu/emergency/contact/json/',
         type: 'GET',
         dataType: 'jsonp',
         cache: false,

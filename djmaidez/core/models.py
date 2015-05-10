@@ -1,9 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import BigInteger, Boolean, Column, DateTime
-from sqlalchemy import ForeignKey, Integer, String
-from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
-
-from djtools.fields import NOW
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 
 Base = declarative_base()
 
