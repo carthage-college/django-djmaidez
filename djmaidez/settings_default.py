@@ -40,7 +40,7 @@ SERVER_URL = "www.example.com"
 API_URL = "%s/%s" % (SERVER_URL, "api")
 ROOT_URLCONF = 'djmaidez.core.urls'
 STATIC_ROOT = '/d2/django_projects/emergency/static'
-
+DEFAULT_UID = ""
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
