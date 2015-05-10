@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 {% block extra_javascript %}
 <script>
-
+function GetUserID() {
+    return parseInt("1397143",10);
+}
+function GetUserType() {
+    return "student";
+}
 function successCallback(data) {
         $('#emergencyContactFiller').html(data.emc);
 }
 $(document).ready(function() {
-
     $.ajax({
-        url: 'https://www.carthage.edu/emergency/contact/json/',
+        url: 'https://{{server_url}}/emergency/contact/json/',
         type: 'GET',
         dataType: 'jsonp',
         cache: false,
         jsonpCallbackString:successCallback,
         error:function(xhr, ajaxOptions, thrownError) {
-                //alert("ERROR: "+ thrownError);
+            console.log("ERROR: "+ thrownError);
         }
     },"json");
 
