@@ -1,12 +1,27 @@
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.utils import simplejson
 
-from djzbar.utils.informix import do_sql
-from djzbar.utils.mssql import get_userid
+from djzbar.utils.informix import do_sql, get_session
+from djtools.utils.database import row2dict
+
+from djmaidez.core.models import AARec, MOBILE_CARRIER, RELATIONSHIP
 
 import datetime
+
+EARL = settings.INFORMIX_EARL
+ENS_CODES = ['MIS1','MIS2','MIS3','ENS','ICE','ICE2']
+
+def test(request):
+    """
+    Test
+    """
+    return render_to_response(
+        "contact/test.html",
+        context_instance=RequestContext(request)
+    )
 
 def json(request):
     """
@@ -51,7 +66,6 @@ def save(request):
     ICE2_REL = request.GET.get("ICE2_REL", "")
 
     HOSTID = USERID
-    #HOSTID = get_userid(USERID)
     now = datetime.datetime.now()
 
     end_date=''
@@ -279,111 +293,68 @@ def save(request):
         content_type="application/json; charset=utf-8"
     )
 
+def solo(request):
+    """
+    """
+    cid = request.GET.get("UserID", "")
+
+    session = get_session(EARL)
+
+    objs = session.query(AARec).filter_by(id=cid).\
+        filter(AARec.aa.in_(ENS_CODES)).all()
+
+    data = {}
+    for o in objs:
+        data[o.aa] = row2dict(o)
+    data["mobile_carrier"] = MOBILE_CARRIER
+    data["relationship"] = RELATIONSHIP
+    data["solo"] = True
+    return render_to_response(
+        "contact/home.html", data,
+        context_instance=RequestContext(request)
+    )
+
+    return render_to_response(
+        "contact/solo.html",
+        context_instance=RequestContext(request)
+    )
+
 def populate(request):
     HOSTID = request.GET.get("UserID", "")
 
-    mis1_line1=''
-    mis1_cell_carrier=''
-    mis1_phone=''
-    mis1_line2=''
-    mis1_line3=''
-    mis2_line1=''
-    mis2_phone=''
-    mis3_line1=''
-    mis3_phone=''
-    ens_opt_out=''
-    ens_phone=''
-    ens_cell_carrier=''
-    ens_line1=''
-    ice1_line1=''
-    ice1_phone=''
-    ice1_line2=''
-    ice1_line3=''
-    ice1_cell_carrier=''
-    ice2_line1=''
-    ice2_phone=''
-    ice2_line2=''
-    ice2_line3=''
-    ice2_cell_carrier=''
-    ens_end_date=''
+    session = get_session(EARL)
 
-    sql = "SELECT * FROM aa_rec WHERE aa = 'MIS1' AND id='{}'".format(HOSTID)
-    mis1Q = do_sql(sql)
-    for m1 in mis1Q:
-         mis1_line1=m1.line1
-         mis1_cell_carrier=m1.cell_carrier
-         mis1_phone=m1.phone
-         mis1_line2=m1.line2
-         mis1_line3=m1.line3
+    objs = session.query(AARec).filter_by(id=HOSTID).\
+        filter(AARec.aa.in_(ENS_CODES)).all()
 
-    sql = "SELECT * FROM aa_rec WHERE aa = 'MIS2' AND id='{}'".format(HOSTID)
-    mis2Q = do_sql(sql)
-    for m2 in mis2Q:
-         mis2_line1=m2.line1
-         mis2_phone=m2.phone
-
-    sql = "SELECT * FROM aa_rec WHERE aa = 'MIS3' AND id='{}'".format(HOSTID)
-    mis3Q = do_sql(sql)
-    for m3 in mis3Q:
-         mis3_line1=m3.line1
-         mis3_phone=m3.phone
-
-    sql = "SELECT * FROM aa_rec WHERE aa = 'ENS' AND id='{}'".format(HOSTID)
-    ensQ = do_sql(sql)
-    for e in ensQ:
-         ens_opt_out=e.opt_out
-         ens_phone=e.phone
-         ens_cell_carrier=e.cell_carrier
-         ens_line1=e.line1
-         ens_end_date=e.end_date
-
-    sql = "SELECT * FROM aa_rec WHERE aa = 'ICE' AND id='{}'".format(HOSTID)
-    ice1Q = do_sql(sql)
-    for i1 in ice1Q:
-         ice1_line1=i1.line1
-         ice1_phone=i1.phone
-         ice1_line2=i1.line2
-         ice1_line3=i1.line3
-         ice1_cell_carrier=i1.cell_carrier
-
-    sql = "SELECT * FROM aa_rec WHERE aa = 'ICE2' AND id='{}'".format(HOSTID)
-    ice2Q = do_sql(sql)
-    for i2 in ice2Q:
-         ice2_line1=i2.line1
-         ice2_phone=i2.phone
-         ice2_line2=i2.line2
-         ice2_line3=i2.line3
-         ice2_cell_carrier=i2.cell_carrier
-
-    ###### FIX THIS ######
-    #STATUS='Missing'
-    STATUS='Fresh'
-
+    data = {}
+    for o in objs:
+        data[o.aa] = row2dict(o)
     context = {
-            'mis1_name':mis1_line1,
-            'mis1_rel':mis1_cell_carrier,
-            'mis1_phone1':mis1_phone,
-            'mis1_phone2':mis1_line2,
-            'mis1_phone3':mis1_line3,
-            'mis2_name':mis2_line1,
-            'mis2_phone1':mis2_phone,
-            'mis3_name':mis3_line1,
-            'mis3_phone1':mis3_phone,
-            'ens_self_cell':ens_opt_out,
-            'ens_sms':ens_phone,
-            'ens_carrier':ens_cell_carrier,
-            'ens_email':ens_line1,
-            'ice_name':ice1_line1,
-            'ice_phone1':ice1_phone,
-            'ice_phone2':ice1_line2,
-            'ice_phone3':ice1_line3,
-            'ice_rel':ice1_cell_carrier,
-            'ice2_name':ice2_line1,
-            'ice2_phone1':ice2_phone,
-            'ice2_phone2':ice2_line2,
-            'ice2_phone3':ice2_line3,
-            'ice2_rel':ice2_cell_carrier,
-            'ens_end_date':str(ens_end_date)
+            'mis1_name':data.get("MIS1", {}).get("line1"),
+            'mis1_rel':data.get("MIS1", {}).get("cell_carrier"),
+            'mis1_phone1':data.get("MIS1", {}).get("phone"),
+            'mis1_phone2':data.get("MIS1", {}).get("line2"),
+            'mis1_phone3':data.get("MIS1", {}).get("line3"),
+            'mis2_name':data.get("MIS2", {}).get("line1"),
+            'mis2_phone1':data.get("MIS2", {}).get("phone"),
+            'mis3_name':data.get("MIS3", {}).get("line1"),
+            'mis3_phone1':data.get("MIS3", {}).get("phone"),
+            'ens_self_cell':data.get("ENS", {}).get("opt_out"),
+            'ens_sms':data.get("ENS", {}).get("phone"),
+            'ens_carrier':data.get("ENS", {}).get("cell_carrier"),
+            'ens_email':data.get("ENS", {}).get("line1"),
+            'ice_name':data.get("ICE1", {}).get("line1"),
+            'ice_phone1':data.get("ICE1", {}).get("phone"),
+            'ice_phone2':data.get("ICE1", {}).get("line2"),
+            'ice_phone3':data.get("ICE1", {}).get("line3"),
+            'ice_rel':data.get("ICE1", {}).get("cell_carrier"),
+            'ice2_name':data.get("ICE2", {}).get("line1"),
+            'ice2_phone1':data.get("ICE2", {}).get("phone"),
+            'ice2_phone2':data.get("ICE2", {}).get("line2"),
+            'ice2_phone3':data.get("ICE2", {}).get("line3"),
+            'ice2_rel':data.get("ICE2", {}).get("cell_carrier"),
+            'ens_end_date':str(data.get("ENS", {}).get("end_date"))
     }
     retVal = simplejson.dumps(context)
     return HttpResponse(
