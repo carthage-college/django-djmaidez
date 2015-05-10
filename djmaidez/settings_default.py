@@ -4,6 +4,7 @@ import os.path
 DEBUG = False
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+INFORMIX_DEBUG = "debug"
 
 ADMINS = (
     (''),
@@ -37,7 +38,7 @@ MEDIA_URL = '/emergency/static/'
 STATIC_URL = '/sdjmedia/'
 SERVER_URL = "www.example.com"
 API_URL = "%s/%s" % (SERVER_URL, "api")
-ROOT_URLCONF = 'emergency.core.urls'
+ROOT_URLCONF = 'djmaidez.core.urls'
 STATIC_ROOT = '/d2/django_projects/emergency/static'
 
 # Additional locations of static files
