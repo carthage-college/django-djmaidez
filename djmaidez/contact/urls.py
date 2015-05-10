@@ -9,4 +9,6 @@ urlpatterns = patterns('djmaidez.contact.views',
     url(r'^json/$', 'json', name="json"),
     url(r'^save/$', 'save', name="save"),
     url(r'^populate/$', 'populate', name="populate"),
+    url(r'^solo/$', 'solo', name="solo"),
+    url(r'^test/$', 'test', name="test")
 )
