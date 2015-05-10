@@ -1,9 +1,9 @@
 //GetUserID() is in the portlet settings in order to get the @@UserID from logged in user.
 
     function numbersOnly(source) {
-        var strOut = new String(source); 
-        strOut = strOut.replace(/[^0-9]/g, ''); 
-        return strOut; 
+        var strOut = new String(source);
+        strOut = strOut.replace(/[^0-9]/g, '');
+        return strOut;
     }
     function ensPhoneValidation() {
         var ensPhone = $('#ENS_SELF_CELL').val();
@@ -457,70 +457,76 @@ function jsonResponcePopulate(data) {
         checkIfStale(data.ens_end_date);
 }
 function makeDialog() {
-        changeStyle('emergency_index');
-        $("#main_modal").dialog({
-            autoOpen: true,
-            height: 620,
-            width: 850,
-            modal: true,
-            buttons: { "Save": function(){
-                if(isValid() && !isNaN(GetUserID())) {
-                        var a = $("#MIS1_NAME").val();
-                        var b = $("#MIS1_REL").val();
-                        var c = $("#MIS1_PHONE1").val();
-                        var d = $("#MIS1_PHONE2").val();
-                        var e = $("#MIS1_PHONE3").val();
-                        var f = $("#MIS2_NAME").val();
-                        var g = $("#MIS2_PHONE1").val();
-                        var h = $("#MIS3_NAME").val();
-                        var i = $("#MIS3_PHONE1").val();
-                        var j = $("#ENS_SELF_CELL").val();
-                        var k = $('input[name=ENS_SMS]:checked').val();
-                        var l = $("#ENS_CARRIER").val();
-                        var m = $("#ENS_EMAIL").val();
-                        var n = $("#ICE_NAME").val();
-                        var o = $("#ICE_PHONE1").val();
-                        var p = $("#ICE_PHONE2").val();
-                        var q = $("#ICE_PHONE3").val();
-                        var r = $("#ICE_REL").val();
-                        var t = $("#ICE2_NAME").val();
-                        var u = GetUserID();
-                        var v = $("#ICE2_PHONE1").val();
-                        var w = $("#ICE2_PHONE2").val();
-                        var x = $("#ICE2_PHONE3").val();
-                        var y = $("#ICE2_REL").val(); 
-                        $.getJSON('https://www.carthage.edu/emergency/contact/save?callback=?', {
-                                MIS1_NAME:a,
-                                MIS1_REL:b,
-                                MIS1_PHONE1:c,
-                                MIS1_PHONE2:d,
-                                MIS1_PHONE3:e,
-                                MIS2_NAME:f,
-                                MIS2_PHONE1:g,
-                                MIS3_NAME:h,
-                                MIS3_PHONE1:i,
-                                ENS_SELF_CELL:j,
-                                ENS_SMS:k,
-                                ENS_CARRIER:l,
-                                ENS_EMAIL:m,
-                                ICE_NAME:n,
-                                ICE_PHONE1:o,
-                                ICE_PHONE2:p,
-                                ICE_PHONE3:q,
-                                ICE_REL:r,
-                                ICE2_NAME:t,
-                                UserID:u,
-                                ICE2_PHONE1:v,
-                                ICE2_PHONE2:w,
-                                ICE2_PHONE3:x,
-                                ICE2_REL:y
-                        });
-                }
-            }}
-        });
-        $( "#ens_form").accordion({ active:0, header:'div.header', fillSpace:false, clearStyle:true });
-        initializeHandlers();
-        initialvalidation();
+    changeStyle('emergency_index');
+    $("#main_modal").dialog({
+        autoOpen: true,
+        height: 620,
+        width: 850,
+        modal: true,
+        top: 10,
+        buttons: { "Save": function(){
+            if(isValid() && !isNaN(GetUserID())) {
+                var a = $("#MIS1_NAME").val();
+                var b = $("#MIS1_REL").val();
+                var c = $("#MIS1_PHONE1").val();
+                var d = $("#MIS1_PHONE2").val();
+                var e = $("#MIS1_PHONE3").val();
+                var f = $("#MIS2_NAME").val();
+                var g = $("#MIS2_PHONE1").val();
+                var h = $("#MIS3_NAME").val();
+                var i = $("#MIS3_PHONE1").val();
+                var j = $("#ENS_SELF_CELL").val();
+                var k = $('input[name=ENS_SMS]:checked').val();
+                var l = $("#ENS_CARRIER").val();
+                var m = $("#ENS_EMAIL").val();
+                var n = $("#ICE_NAME").val();
+                var o = $("#ICE_PHONE1").val();
+                var p = $("#ICE_PHONE2").val();
+                var q = $("#ICE_PHONE3").val();
+                var r = $("#ICE_REL").val();
+                var t = $("#ICE2_NAME").val();
+                var u = GetUserID();
+                var v = $("#ICE2_PHONE1").val();
+                var w = $("#ICE2_PHONE2").val();
+                var x = $("#ICE2_PHONE3").val();
+                var y = $("#ICE2_REL").val();
+                $.getJSON('/emergency/contact/save?callback=?', {
+                    MIS1_NAME:a,
+                    MIS1_REL:b,
+                    MIS1_PHONE1:c,
+                    MIS1_PHONE2:d,
+                    MIS1_PHONE3:e,
+                    MIS2_NAME:f,
+                    MIS2_PHONE1:g,
+                    MIS3_NAME:h,
+                    MIS3_PHONE1:i,
+                    ENS_SELF_CELL:j,
+                    ENS_SMS:k,
+                    ENS_CARRIER:l,
+                    ENS_EMAIL:m,
+                    ICE_NAME:n,
+                    ICE_PHONE1:o,
+                    ICE_PHONE2:p,
+                    ICE_PHONE3:q,
+                    ICE_REL:r,
+                    ICE2_NAME:t,
+                    UserID:u,
+                    ICE2_PHONE1:v,
+                    ICE2_PHONE2:w,
+                    ICE2_PHONE3:x,
+                    ICE2_REL:y
+                });
+            }
+        }}
+    });
+    $( "#ens_form").accordion({
+        active:0,
+        header:'div.header',
+        fillSpace:false,
+        clearStyle:true
+    });
+    initializeHandlers();
+    initialvalidation();
 }
 
 function checkIfStale(end_date) {
@@ -540,23 +546,23 @@ function checkIfStale(end_date) {
 }
 
 function doneRendering() {
-        if(!isNaN(GetUserID())) {
-                $.ajax({
-                     url:'https://www.carthage.edu/emergency/contact/populate/?UserID='+GetUserID(),
-                     type:'GET',
-                     dataType:'jsonp',
-                     cache:false,
-                     jsonpCallbackString:jsonResponcePopulate
-                });
-        }
-
-        $("#ens_form_button").click(function() {
-                makeDialog();
+    if(!isNaN(GetUserID())) {
+        $.ajax({
+             url:'https://www.carthage.edu/emergency/contact/populate/?UserID='+GetUserID(),
+             type:'GET',
+             dataType:'jsonp',
+             cache:false,
+             jsonpCallbackString:jsonResponcePopulate
         });
+    }
 
-        if(GetUserType() == "fac" || GetUserType() == "staff") {
-                $("#missingheader").hide();
-        }
+    $("#ens_form_button").click(function() {
+        makeDialog();
+    });
+
+    if(GetUserType() == "fac" || GetUserType() == "staff") {
+        $("#missingheader").hide();
+    }
 }
 
 //this is called and then sets the div that is an empty div in the portlet settings witht he ajax request.
@@ -566,6 +572,7 @@ function successCallback(data) {
 }
 
 $(document).ready(function() {
+    $.getScript("https://raw.githubusercontent.com/digitalBush/jquery.maskedinput/1.4.0/dist/jquery.maskedinput.min.js", function(){ });
     //JSONP call to get the form and button from Django
     $.ajax({
         url: 'https://www.carthage.edu/emergency/contact/json/',
@@ -576,342 +583,3 @@ $(document).ready(function() {
     },"json");
 });
 
-
-/*
-    Masked Input plugin for jQuery
-    Copyright (c) 2007-2013 Josh Bush (digitalbush.com)
-    Licensed under the MIT license (http://digitalbush.com/projects/masked-input-plugin/#license)
-    Version: 1.3.1
-*/
-(function($) {
-    function getPasteEvent() {
-    var el = document.createElement('input'),
-        name = 'onpaste';
-    el.setAttribute(name, '');
-    return (typeof el[name] === 'function')?'paste':'input';
-}
-
-var pasteEventName = getPasteEvent() + ".mask",
-    ua = navigator.userAgent,
-    iPhone = /iphone/i.test(ua),
-    android=/android/i.test(ua),
-    caretTimeoutId;
-
-$.mask = {
-    //Predefined character definitions
-    definitions: {
-        '9': "[0-9]",
-        'a': "[A-Za-z]",
-        '*': "[A-Za-z0-9]"
-    },
-    dataName: "rawMaskFn",
-    placeholder: '_',
-};
-
-$.fn.extend({
-    //Helper Function for Caret positioning
-    caret: function(begin, end) {
-        var range;
-
-        if (this.length === 0 || this.is(":hidden")) {
-            return;
-        }
-
-        if (typeof begin == 'number') {
-            end = (typeof end === 'number') ? end : begin;
-            return this.each(function() {
-                if (this.setSelectionRange) {
-                    this.setSelectionRange(begin, end);
-                } else if (this.createTextRange) {
-                    range = this.createTextRange();
-                    range.collapse(true);
-                    range.moveEnd('character', end);
-                    range.moveStart('character', begin);
-                    range.select();
-                }
-            });
-        } else {
-            if (this[0].setSelectionRange) {
-                begin = this[0].selectionStart;
-                end = this[0].selectionEnd;
-            } else if (document.selection && document.selection.createRange) {
-                range = document.selection.createRange();
-                begin = 0 - range.duplicate().moveStart('character', -100000);
-                end = begin + range.text.length;
-            }
-            return { begin: begin, end: end };
-        }
-    },
-    unmask: function() {
-        return this.trigger("unmask");
-    },
-    mask: function(mask, settings) {
-        var input,
-            defs,
-            tests,
-            partialPosition,
-            firstNonMaskPos,
-            len;
-
-        if (!mask && this.length > 0) {
-            input = $(this[0]);
-            return input.data($.mask.dataName)();
-        }
-        settings = $.extend({
-            placeholder: $.mask.placeholder, // Load default placeholder
-            completed: null
-        }, settings);
-
-
-        defs = $.mask.definitions;
-        tests = [];
-        partialPosition = len = mask.length;
-        firstNonMaskPos = null;
-
-        $.each(mask.split(""), function(i, c) {
-            if (c == '?') {
-                len--;
-                partialPosition = i;
-            } else if (defs[c]) {
-                tests.push(new RegExp(defs[c]));
-                if (firstNonMaskPos === null) {
-                    firstNonMaskPos = tests.length - 1;
-                }
-            } else {
-                tests.push(null);
-            }
-        });
-
-        return this.trigger("unmask").each(function() {
-            var input = $(this),
-                buffer = $.map(
-                mask.split(""),
-                function(c, i) {
-                    if (c != '?') {
-                        return defs[c] ? settings.placeholder : c;
-                    }
-                }),
-                focusText = input.val();
-
-            function seekNext(pos) {
-                while (++pos < len && !tests[pos]);
-                return pos;
-            }
-
-            function seekPrev(pos) {
-                while (--pos >= 0 && !tests[pos]);
-                return pos;
-            }
-
-            function shiftL(begin,end) {
-                var i,
-                    j;
-
-                if (begin<0) {
-                    return;
-                }
-
-                for (i = begin, j = seekNext(end); i < len; i++) {
-                    if (tests[i]) {
-                        if (j < len && tests[i].test(buffer[j])) {
-                            buffer[i] = buffer[j];
-                            buffer[j] = settings.placeholder;
-                        } else {
-                            break;
-                        }
-
-                        j = seekNext(j);
-                    }
-                }
-                writeBuffer();
-                input.caret(Math.max(firstNonMaskPos, begin));
-            }
-
-            function shiftR(pos) {
-                var i,
-                    c,
-                    j,
-                    t;
-
-                for (i = pos, c = settings.placeholder; i < len; i++) {
-                    if (tests[i]) {
-                        j = seekNext(i);
-                        t = buffer[i];
-                        buffer[i] = c;
-                        if (j < len && tests[j].test(t)) {
-                            c = t;
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }
-
-            function keydownEvent(e) {
-                var k = e.which,
-                    pos,
-                    begin,
-                    end;
-
-                //backspace, delete, and escape get special treatment
-                if (k === 8 || k === 46 || (iPhone && k === 127)) {
-                    pos = input.caret();
-                    begin = pos.begin;
-                    end = pos.end;
-
-                    if (end - begin === 0) {
-                        begin=k!==46?seekPrev(begin):(end=seekNext(begin-1));
-                        end=k===46?seekNext(end):end;
-                    }
-                    clearBuffer(begin, end);
-                    shiftL(begin, end - 1);
-
-                    e.preventDefault();
-                } else if (k == 27) {//escape
-                    input.val(focusText);
-                    input.caret(0, checkVal());
-                    e.preventDefault();
-                }
-            }
-
-            function keypressEvent(e) {
-                var k = e.which,
-                    pos = input.caret(),
-                    p,
-                    c,
-                    next;
-
-                if (e.ctrlKey || e.altKey || e.metaKey || k < 32) {//Ignore
-                    return;
-                } else if (k) {
-                    if (pos.end - pos.begin !== 0){
-                        clearBuffer(pos.begin, pos.end);
-                        shiftL(pos.begin, pos.end-1);
-                    }
-
-                    p = seekNext(pos.begin - 1);
-                    if (p < len) {
-                        c = String.fromCharCode(k);
-                        if (tests[p].test(c)) {
-                            shiftR(p);
-
-                            buffer[p] = c;
-                            writeBuffer();
-                            next = seekNext(p);
-
-                            if(android){
-                                setTimeout($.proxy($.fn.caret,input,next),0);
-                            }else{
-                                input.caret(next);
-                            }
-
-                            if (settings.completed && next >= len) {
-                                settings.completed.call(input);
-                            }
-                        }
-                    }
-                    e.preventDefault();
-                }
-            }
-
-            function clearBuffer(start, end) {
-                var i;
-                for (i = start; i < end && i < len; i++) {
-                    if (tests[i]) {
-                        buffer[i] = settings.placeholder;
-                    }
-                }
-            }
-
-            function writeBuffer() { input.val(buffer.join('')); }
-
-            function checkVal(allow) {
-                //try to place characters where they belong
-                var test = input.val(),
-                    lastMatch = -1,
-                    i,
-                    c;
-
-                for (i = 0, pos = 0; i < len; i++) {
-                    if (tests[i]) {
-                        buffer[i] = settings.placeholder;
-                        while (pos++ < test.length) {
-                            c = test.charAt(pos - 1);
-                            if (tests[i].test(c)) {
-                                buffer[i] = c;
-                                lastMatch = i;
-                                break;
-                            }
-                        }
-                        if (pos > test.length) {
-                            break;
-                        }
-                    } else if (buffer[i] === test.charAt(pos) && i !== partialPosition) {
-                        pos++;
-                        lastMatch = i;
-                    }
-                }
-                if (allow) {
-                    writeBuffer();
-                } else if (lastMatch + 1 < partialPosition) {
-                    input.val("");
-                    clearBuffer(0, len);
-                } else {
-                    writeBuffer();
-                    input.val(input.val().substring(0, lastMatch + 1));
-                }
-                return (partialPosition ? i : firstNonMaskPos);
-            }
-
-            input.data($.mask.dataName,function(){
-                return $.map(buffer, function(c, i) {
-                    return tests[i]&&c!=settings.placeholder ? c : null;
-                }).join('');
-            });
-
-            if (!input.attr("readonly"))
-                input
-                .one("unmask", function() {
-                    input
-                        .unbind(".mask")
-                        .removeData($.mask.dataName);
-                })
-                .bind("focus.mask", function() {
-                    clearTimeout(caretTimeoutId);
-                    var pos,
-                        moveCaret;
-
-                    focusText = input.val();
-                    pos = checkVal();
-                    
-                    caretTimeoutId = setTimeout(function(){
-                        writeBuffer();
-                        if (pos == mask.length) {
-                            input.caret(0, pos);
-                        } else {
-                            input.caret(pos);
-                        }
-                    }, 10);
-                })
-                .bind("blur.mask", function() {
-                    checkVal();
-                    if (input.val() != focusText)
-                        input.change();
-                })
-                .bind("keydown.mask", keydownEvent)
-                .bind("keypress.mask", keypressEvent)
-                .bind(pasteEventName, function() {
-                    setTimeout(function() { 
-                        var pos=checkVal(true);
-                        input.caret(pos); 
-                        if (settings.completed && pos == input.val().length)
-                            settings.completed.call(input);
-                    }, 0);
-                });
-            checkVal(); //Perform initial check for existing values
-        });
-    }
-});
-
-
-})(jQuery);
