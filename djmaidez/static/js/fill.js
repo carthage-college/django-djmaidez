@@ -500,7 +500,7 @@ function makeDialog() {
                 var x = $("#ICE2_PHONE3").val();
                 var y = $("#ICE2_REL").val();
                 var subdomain = getSubdomain();
-                var earl = "https://" + subdomain + "carthage.edu/emergency/contact/save?callback=?"
+                var earl = "https://" + subdomain + ".carthage.edu/emergency/contact/save?callback=?"
                 $.getJSON(earl, {
                     MIS1_NAME:a,
                     MIS1_REL:b,
