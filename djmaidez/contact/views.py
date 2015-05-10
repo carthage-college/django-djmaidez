@@ -19,7 +19,7 @@ def test(request):
     Test
     """
     return render_to_response(
-        "contact/test.html",
+        "contact/test.html",{"uid":settings.DEFAULT_UID},
         context_instance=RequestContext(request)
     )
 
@@ -340,11 +340,11 @@ def populate(request):
             'ens_sms':data.get("ENS", {}).get("phone"),
             'ens_carrier':data.get("ENS", {}).get("cell_carrier"),
             'ens_email':data.get("ENS", {}).get("line1"),
-            'ice_name':data.get("ICE1", {}).get("line1"),
-            'ice_phone1':data.get("ICE1", {}).get("phone"),
-            'ice_phone2':data.get("ICE1", {}).get("line2"),
-            'ice_phone3':data.get("ICE1", {}).get("line3"),
-            'ice_rel':data.get("ICE1", {}).get("cell_carrier"),
+            'ice_name':data.get("ICE", {}).get("line1"),
+            'ice_phone1':data.get("ICE", {}).get("phone"),
+            'ice_phone2':data.get("ICE", {}).get("line2"),
+            'ice_phone3':data.get("ICE", {}).get("line3"),
+            'ice_rel':data.get("ICE", {}).get("cell_carrier"),
             'ice2_name':data.get("ICE2", {}).get("line1"),
             'ice2_phone1':data.get("ICE2", {}).get("phone"),
             'ice2_phone2':data.get("ICE2", {}).get("line2"),
