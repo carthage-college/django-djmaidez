@@ -8,7 +8,7 @@ sys.path.append('/data2/django_current/')
 sys.path.append('/data2/django_projects/')
 sys.path.append('/data2/django_third/')
 # Django
-os.environ['DJANGO_SETTINGS_MODULE'] = 'emergency.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'djmaidez.settings'
 os.environ.setdefault("PYTHON_EGG_CACHE", "/var/cache/python/.python-eggs")
 os.environ.setdefault("TZ", "America/Chicago")
 # informix
