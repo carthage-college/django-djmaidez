@@ -31,6 +31,10 @@ class AARec(Base):
     def __repr__(self):
         return str(self.aa)
 
+ENS_CODES = [
+    'MIS1','MIS2','MIS3','ENS','ICE','ICE2'
+]
+
 MOBILE_CARRIER = (
     ("","---select---"),
     ("1","AT&T"),
