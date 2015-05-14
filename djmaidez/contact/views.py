@@ -7,7 +7,6 @@ from django.template import Context, RequestContext, loader
 
 from djzbar.utils.informix import do_sql, get_session
 from djtools.utils.database import row2dict
-from djsani.core.utils import get_manager
 
 from djmaidez.core.models import AARec, ENS_CODES, MOBILE_CARRIER, RELATIONSHIP
 
@@ -151,6 +150,7 @@ def save(request):
 
     # medical forms data?
     if djsani:
+        from djsani.core.utils import get_manager
         manager = get_manager(session, cid)
         manager.emergency_contact=True
 
