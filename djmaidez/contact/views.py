@@ -1,58 +1,34 @@
 from django.conf import settings
+from django.utils import simplejson
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
 from django.template import Context, RequestContext, loader
-from django.utils import simplejson
 
 from djzbar.utils.informix import do_sql, get_session
 from djtools.utils.database import row2dict
+from djsani.core.utils import get_manager
 
-from djmaidez.core.models import AARec, MOBILE_CARRIER, RELATIONSHIP
+from djmaidez.core.models import AARec, ENS_CODES, MOBILE_CARRIER, RELATIONSHIP
 
 import datetime
 
 EARL = settings.INFORMIX_EARL
-ENS_CODES = ['MIS1','MIS2','MIS3','ENS','ICE','ICE2']
 
 def test(request):
     """
-    Test the modal outside of portal
+    Test the modal outside of an embedded environment
     """
     return render_to_response(
         "contact/test.html",{"uid":settings.DEFAULT_UID},
         context_instance=RequestContext(request)
     )
 
-def solo(request):
-    """
-    """
-    cid = request.GET.get("UserID", "")
-
-    session = get_session(EARL)
-
-    objs = session.query(AARec).filter_by(id=cid).\
-        filter(AARec.aa.in_(ENS_CODES)).all()
-
-    data = {}
-    for o in objs:
-        data[o.aa] = row2dict(o)
-    data["mobile_carrier"] = MOBILE_CARRIER
-    data["relationship"] = RELATIONSHIP
-    data["solo"] = True
-
-    session.close()
-
-    return render_to_response(
-        "contact/solo.html", data,
-        context_instance=RequestContext(request)
-    )
-
-def json(request):
+def form(request):
     """
     Called from javascript fill.js onload
     """
-    template = "contact/modal.html"
-    t = loader.get_template(template)
+    t = loader.get_template("contact/modal.html")
     data = {}
     data["mobile_carrier"] = MOBILE_CARRIER
     data["relationship"] = RELATIONSHIP
@@ -93,6 +69,8 @@ def save(request):
 
     # college ID
     cid = request.GET.get("UserID", "")
+    # did the data come from medical forms project?
+    djsani = request.GET.get("DJSANI","")
 
     # missing person 1
     MIS1 = {
@@ -170,6 +148,12 @@ def save(request):
             code["id"] = cid
             a = AARec(**code)
             session.add(a)
+
+    # medical forms data?
+    if djsani:
+        manager = get_manager(session, cid)
+        manager.emergency_contact=True
+
     session.commit()
     session.close()
 
