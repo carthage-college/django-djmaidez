@@ -24,12 +24,6 @@ function getSubdomain() {
     return subdomain;
 }
 
-// this must be all in here so that when the ajax is done then the actions
-// will be attatched to the button and form that is turned into a dialog.
-function saveDone(data) {
-    $("#main_modal").dialog('close');
-}
-
 function jsonResponcePopulate(data) {
     $("#MIS1_NAME").val(data.MIS1.line1);
     $("#MIS1_REL").val(data.MIS1.cell_carrier);
@@ -113,6 +107,7 @@ function makeDialog() {
     initialvalidation();
 }
 
+// check if the person's contact data needs to be updated
 function checkIfStale(end_date) {
     var now = new Date();
     end_date_year = end_date.substring(0,4);
@@ -120,12 +115,11 @@ function checkIfStale(end_date) {
     end_date_day = end_date.substring(8,10);
 
     var end_date_to_date = new Date(end_date_year, end_date_month-1, end_date_day);
-    // end_date_to_date = end_date_to_date.format("yyyy-MM-dd");
-    // now = now.format("yyyy-MM-dd");
     if(now > end_date_to_date) {
-         // alert before dialog appears alerting why it is appearing
-         alert('Your emergency contact information has expired, please review and make updates to your records.');
-         makeDialog();
+        // alert before dialog appears alerting why it is appearing
+        alert("Your emergency contact information has expired.\n\
+             Please review and make updates to your records.");
+        makeDialog();
     }
 }
 
@@ -165,7 +159,7 @@ $(document).ready(function() {
     // jsonpCallbackString:successCallback is success equivalent,
     // and will call the returned javascript from the ajax request
     $.ajax({
-        url: 'https://' + subdomain + '.carthage.edu/emergency/contact/json/',
+        url: 'https://' + subdomain + '.carthage.edu/emergency/contact/form/',
         type: 'GET',
         dataType: 'jsonp',
         cache: false,
