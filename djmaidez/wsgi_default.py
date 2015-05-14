@@ -4,9 +4,9 @@ import os, sys
 sys.path.append('/usr/lib/python2.7/')
 sys.path.append('/usr/lib/python2.7/dist-packages/')
 sys.path.append('/usr/local/lib/python2.7/dist-packages/')
-sys.path.append('/data2/django_current/')
-sys.path.append('/data2/django_projects/')
-sys.path.append('/data2/django_third/')
+sys.path.append('/usr/local/django_current/')
+sys.path.append('/usr/local/django_projects/')
+sys.path.append('/usr/local/django_third/')
 # Django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'djmaidez.settings'
 os.environ.setdefault("PYTHON_EGG_CACHE", "/var/cache/python/.python-eggs")

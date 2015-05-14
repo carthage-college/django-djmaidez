@@ -38,13 +38,13 @@ USE_I18N = True
 USE_L10N = True
 DEFAULT_CHARSET = 'utf-8'
 FILE_CHARSET = 'utf-8'
-MEDIA_ROOT = '/data2/django_projects/emergency/static/'
-MEDIA_URL = '/emergency/static/'
+MEDIA_ROOT = ''
+MEDIA_URL = ''
 STATIC_URL = '/sdjmedia/'
 SERVER_URL = "www.example.com"
 API_URL = "%s/%s" % (SERVER_URL, "api")
 ROOT_URLCONF = 'djmaidez.core.urls'
-STATIC_ROOT = '/d2/django_projects/emergency/static'
+STATIC_ROOT = ''
 DEFAULT_UID = ""
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -78,7 +78,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_DIRS = (
-    "/d2/django_projects/emergency/templates/",
+    ""
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     "djtools.context_processors.sitevars",
@@ -115,8 +115,8 @@ AUTHENTICATION_BACKENDS = (
     'djauth.ldapBackend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-LOGIN_URL = '/emergency/accounts/login/'
-LOGIN_REDIRECT_URL = '/emergency/'
+LOGIN_URL = ''
+LOGIN_REDIRECT_URL = ''
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_DOMAIN= ""
 SESSION_COOKIE_NAME = ""
