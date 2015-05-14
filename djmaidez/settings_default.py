@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 import os.path
 
+from djzbar.settings import INFORMIX_EARL_TEST as INFORMIX_EARL
+#from djzbar.settings import INFORMIX_EARL
+# we need start date for the student profile manager
+from djsani.settings import START_DATE
+
 DEBUG = False
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
