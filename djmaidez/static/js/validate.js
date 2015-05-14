@@ -411,3 +411,10 @@ function isValid() {
         return true;
     }
 }
+
+// this must here so that when ajax is done the actions
+// will be attatched to the button and form that is turned
+// into a dialog.
+function saveDone(data) {
+    $("#main_modal").dialog('close');
+}
