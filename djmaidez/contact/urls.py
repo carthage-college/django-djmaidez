@@ -6,9 +6,8 @@ urlpatterns = patterns('djmaidez.contact.views',
         r'^$',
         TemplateView.as_view(template_name="contact/home.html")
     ),
-    url(r'^json/$', 'json', name="json"),
-    url(r'^save/$', 'save', name="save"),
+    url(r'^form/$', 'form', name="form"),
     url(r'^populate/$', 'populate', name="populate"),
-    url(r'^solo/$', 'solo', name="solo"),
+    url(r'^save/$', 'save', name="save"),
     url(r'^test/$', 'test', name="test")
 )
