@@ -51,7 +51,7 @@ def populate(request):
     for e in ENS_CODES:
         data[e] = {}
     for o in objs:
-        data[o.aa] = row2dict(o)
+        data[o.aa] = row2dict(o, jason=True)
     retVal = simplejson.dumps(data)
 
     session.close()
