@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.template import Context, RequestContext, loader
 
-from djzbar.utils.informix import do_sql, get_session
+from djzbar.utils.informix import get_session
 from djtools.utils.database import row2dict
 
 from djmaidez.core.models import AARec, ENS_CODES, MOBILE_CARRIER, RELATIONSHIP
