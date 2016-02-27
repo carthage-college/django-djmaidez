@@ -1,7 +1,7 @@
 from django.conf import settings
 from djzbar.utils.informix import do_sql as do_esql
 
-cid = "1217657"
+cid = ""
 
 FIELDS = ['aa','beg_date','end_date','line1','line2','line3',
 'phone','phone_ext','cell_carrier','opt_out']

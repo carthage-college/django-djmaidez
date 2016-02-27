@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.utils import simplejson
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
@@ -11,6 +10,7 @@ from djtools.utils.database import row2dict
 from djmaidez.core.models import AARec, ENS_CODES, MOBILE_CARRIER, RELATIONSHIP
 
 import datetime
+import simplejson
 
 EARL = settings.INFORMIX_EARL
 
