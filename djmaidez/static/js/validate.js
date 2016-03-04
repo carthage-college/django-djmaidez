@@ -301,7 +301,7 @@ function mis3Phone1Validation() {
 
 // Bind onBlur event handlers to each field to validate
 // as people fill out the form
-/*
+
 function initializeHandlers() {
     $.mask.definitions['8']='[23456789]';
     $('#ENS_SELF_CELL').blur(ensPhoneValidation);
@@ -335,7 +335,6 @@ function initializeHandlers() {
     $('#MIS3_PHONE1').blur(mis3Phone1Validation);
     $('#MIS3_PHONE1').mask("899-999-9999");
 }
-*/
 
 // set the CSS feedback for required and/or invalid fields
 function initialvalidation() {
