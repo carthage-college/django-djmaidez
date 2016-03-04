@@ -153,6 +153,7 @@ function successCallback(data) {
 
 $(document).ready(function() {
     var subdomain = getSubdomain();
+    $.getScript("https://www.carthage.edu/static/vendor/jquery/plugins/maskedinput/dist/jquery.maskedinput.min.js", function(){ });
     $.getScript("https://" + subdomain + ".carthage.edu/static/emergency/js/validate.js", function(){ });
     // JSONP call to get the form and button from Django
     // jsonpCallbackString:successCallback is success equivalent,
