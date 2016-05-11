@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
-from django.contrib.auth.decorators import login_required
 from django.template import Context, RequestContext, loader
 
 from djzbar.utils.informix import get_session
