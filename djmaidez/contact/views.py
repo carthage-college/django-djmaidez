@@ -6,7 +6,9 @@ from django.template import Context, RequestContext, loader
 from djzbar.utils.informix import get_session
 from djtools.utils.database import row2dict
 
-from djmaidez.core.models import AARec, ENS_CODES, MOBILE_CARRIER, RELATIONSHIP
+from djmaidez.core.models import (
+    ENS_CODES, ENS_FIELDS, MOBILE_CARRIER, RELATIONSHIP
+)
 
 import datetime
 import simplejson
@@ -44,13 +46,23 @@ def populate(request):
 
     session = get_session(EARL)
 
-    objs = session.query(AARec).filter_by(id=cid).\
-        filter(AARec.aa.in_(ENS_CODES)).all()
+    sql = 'SELECT * FROM aa_rec WHERE aa in {} AND id="{}"'.format(
+        ENS_CODES, cid
+    )
+    objs = session.execute(sql)
+
     data = {}
-    for e in ENS_CODES:
-        data[e] = {}
+
     for o in objs:
-        data[o.aa] = row2dict(o, jason=True)
+        row = {}
+        for field in ENS_FIELDS:
+            try:
+                value = getattr(o, field).decode('cp1252').encode('utf-8')
+            except:
+                value = getattr(o, field)
+            row[field] = value
+        data[o.aa] = row
+
     retVal = simplejson.dumps(data)
 
     session.close()

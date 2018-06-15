@@ -31,9 +31,14 @@ class AARec(Base):
     def __repr__(self):
         return str(self.aa)
 
-ENS_CODES = [
-    'MIS1','MIS2','MIS3','ENS','ICE','ICE2'
+ENS_FIELDS = [
+    'aa','beg_date','end_date','line1','line2','line3',
+    'phone','phone_ext','cell_carrier','opt_out'
 ]
+
+ENS_CODES = (
+    'MIS1','MIS2','MIS3','ENS','ICE','ICE2'
+)
 
 MOBILE_CARRIER = (
     ("","---select---"),
