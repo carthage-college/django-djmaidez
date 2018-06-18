@@ -4,7 +4,6 @@
 function changeStyle(title) {
     var lnks = document.getElementsByTagName('link');
     for (var i = lnks.length - 1; i >= 0; i--) {
-        console.log(lnks[i].getAttribute('title'));
         if (lnks[i].getAttribute('rel').indexOf('style')> -1 && lnks[i].getAttribute('title')) {
             lnks[i].disabled = true;
             if (lnks[i].getAttribute('title') == title) {
@@ -25,37 +24,50 @@ function getSubdomain() {
 }
 
 function jsonResponcePopulate(data) {
-    $("#MIS1_NAME").val(data.MIS1.line1);
-    $("#MIS1_REL").val(data.MIS1.cell_carrier);
-    $("#MIS1_PHONE1").val(data.MIS1.phone);
-    $("#MIS1_PHONE2").val(data.MIS1.line2);
-    $("#MIS1_PHONE3").val(data.MIS1.line3);
-    $("#MIS2_NAME").val(data.MIS2.line1);
-    $("#MIS2_PHONE1").val(data.MIS2.phone);
-    $("#MIS3_NAME").val(data.MIS3.line1);
-    $("#MIS3_PHONE1").val(data.MIS3.phone);
-    $("#ENS_SELF_CELL").val(data.ENS.phone);
-    if(data.ENS.opt_out == 1) {
-        $('input:radio[name=ENS_SMS]')[0].checked = true;
-    } else {
-        $('input:radio[name=ENS_SMS]')[1].checked = true;
+    if (data.hasOwnProperty('MIS1')) {
+        $("#MIS1_NAME").val(data.MIS1.line1);
+        $("#MIS1_REL").val(data.MIS1.cell_carrier);
+        $("#MIS1_PHONE1").val(data.MIS1.phone);
+        $("#MIS1_PHONE2").val(data.MIS1.line2);
+        $("#MIS1_PHONE3").val(data.MIS1.line3);
     }
-    $("#ENS_CARRIER").val(data.ENS.cell_carrier);
-    $("#ENS_EMAIL").val(data.ENS.line1);
-    $("#ICE_NAME").val(data.ICE.line1);
-    $("#ICE_PHONE1").val(data.ICE.phone);
-    $("#ICE_PHONE2").val(data.ICE.line2);
-    $("#ICE_PHONE3").val(data.ICE.line3);
-    $("#ICE_REL").val(data.ICE.cell_carrier);
-    $("#ICE2_NAME").val(data.ICE2.line1);
-    $("#ICE2_PHONE1").val(data.ICE2.phone);
-    $("#ICE2_PHONE2").val(data.ICE2.line2);
-    $("#ICE2_PHONE3").val(data.ICE2.line3);
-    $("#ICE2_REL").val(data.ICE2.cell_carrier);
-    if (data.ENS.end_date) {
-        checkIfStale(data.ENS.end_date);
+    if (data.hasOwnProperty('MIS2')) {
+        $("#MIS2_NAME").val(data.MIS2.line1);
+        $("#MIS2_PHONE1").val(data.MIS2.phone);
+    }
+    if (data.hasOwnProperty('MIS3')) {
+        $("#MIS3_NAME").val(data.MIS3.line1);
+        $("#MIS3_PHONE1").val(data.MIS3.phone);
+    }
+    if (data.hasOwnProperty('ENS')) {
+        $("#ENS_SELF_CELL").val(data.ENS.phone);
+        if(data.ENS.opt_out == 1) {
+            $('input:radio[name=ENS_SMS]')[0].checked = true;
+        } else {
+            $('input:radio[name=ENS_SMS]')[1].checked = true;
+        }
+        $("#ENS_CARRIER").val(data.ENS.cell_carrier);
+        $("#ENS_EMAIL").val(data.ENS.line1);
+        if (data.ENS.end_date) {
+            checkIfStale(data.ENS.end_date);
+        }
+    }
+    if (data.hasOwnProperty('ICE')) {
+        $("#ICE_NAME").val(data.ICE.line1);
+        $("#ICE_PHONE1").val(data.ICE.phone);
+        $("#ICE_PHONE2").val(data.ICE.line2);
+        $("#ICE_PHONE3").val(data.ICE.line3);
+        $("#ICE_REL").val(data.ICE.cell_carrier);
+    }
+    if (data.hasOwnProperty('ICE2')) {
+        $("#ICE2_NAME").val(data.ICE2.line1);
+        $("#ICE2_PHONE1").val(data.ICE2.phone);
+        $("#ICE2_PHONE2").val(data.ICE2.line2);
+        $("#ICE2_PHONE3").val(data.ICE2.line3);
+        $("#ICE2_REL").val(data.ICE2.cell_carrier);
     }
 }
+
 function makeDialog() {
     changeStyle('emergency_index');
     $("#main_modal").dialog({
