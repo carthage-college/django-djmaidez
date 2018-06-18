@@ -1,13 +1,16 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic import TemplateView
 
-urlpatterns = patterns('djmaidez.contact.views',
+from djmaidez.contact import views
+
+
+urlpatterns = [
     url(
         r'^$',
-        TemplateView.as_view(template_name="contact/home.html")
+        TemplateView.as_view(template_name='contact/home.html')
     ),
-    url(r'^form/$', 'form', name="form"),
-    url(r'^populate/$', 'populate', name="populate"),
-    url(r'^save/$', 'save', name="save"),
-    url(r'^test/$', 'test', name="test")
-)
+    url(r'^form/$', views.form, name='form'),
+    url(r'^populate/$', views.populate, name='populate'),
+    url(r'^save/$', views.save, name='save'),
+    url(r'^test/$', views.test, name='test')
+]
