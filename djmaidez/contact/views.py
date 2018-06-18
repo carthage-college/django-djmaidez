@@ -1,9 +1,11 @@
 from django.conf import settings
-from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.template import Context, loader
+from django.http import HttpResponse, Http404
+from django.core.urlresolvers import reverse_lazy
 
 from djzbar.utils.informix import get_session
+from djzbar.decorators.auth import portal_auth_required
 
 from djmaidez.core.models import (
     AARec, ENS_CODES, ENS_FIELDS, MOBILE_CARRIER, RELATIONSHIP
@@ -19,6 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+@portal_auth_required(
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+)
 def test(request):
     """
     Test the modal outside of an embedded environment
@@ -29,6 +34,9 @@ def test(request):
     )
 
 
+@portal_auth_required(
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+)
 def form(request):
     """
     Called from javascript fill.js onload
@@ -48,34 +56,45 @@ def form(request):
     )
 
 
+@portal_auth_required(
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+)
 def populate(request):
     cid = request.GET.get('UserID', '')
 
-    session = get_session(EARL)
+    if cid and cid == request.user.id:
+        session = get_session(EARL)
 
-    sql = 'SELECT * FROM aa_rec WHERE aa in {} AND id="{}"'.format(
-        ENS_CODES, cid
-    )
-    objs = session.execute(sql)
+        sql = 'SELECT * FROM aa_rec WHERE aa in {} AND id="{}"'.format(
+            ENS_CODES, cid
+        )
+        objs = session.execute(sql)
 
-    data = {}
+        data = {}
 
-    for o in objs:
-        row = {}
-        for field in ENS_FIELDS:
-            row[field] = str(getattr(o, field)).decode('cp1252').encode('utf-8')
-        data[o.aa] = row
+        for o in objs:
+            row = {}
+            for field in ENS_FIELDS:
+                row[field] = str(
+                    getattr(o, field)
+                ).decode('cp1252').encode('utf-8')
+            data[o.aa] = row
 
-    retVal = simplejson.dumps(data)
+        retVal = simplejson.dumps(data)
 
-    session.close()
+        session.close()
 
-    return HttpResponse(
-        'jsonResponcePopulate(' + retVal + ')',
-        content_type='application/json; charset=utf-8'
-    )
+        return HttpResponse(
+            'jsonResponcePopulate(' + retVal + ')',
+            content_type='application/json; charset=utf-8'
+        )
+    else:
+        raise Http404
 
 
+@portal_auth_required(
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+)
 def save(request):
     """
     Called from jquery ui modal construction. .getJSON in buttons.
