@@ -7,13 +7,18 @@ from djzbar.utils.informix import get_session
 from djtools.utils.database import row2dict
 
 from djmaidez.core.models import (
-    ENS_CODES, ENS_FIELDS, MOBILE_CARRIER, RELATIONSHIP
+    AARec, ENS_CODES, ENS_FIELDS, MOBILE_CARRIER, RELATIONSHIP
 )
 
+import sys
 import datetime
 import simplejson
 
 EARL = settings.INFORMIX_EARL
+
+import logging
+logger = logging.getLogger(__name__)
+
 
 def test(request):
     """
@@ -56,11 +61,7 @@ def populate(request):
     for o in objs:
         row = {}
         for field in ENS_FIELDS:
-            try:
-                value = getattr(o, field).decode('cp1252').encode('utf-8')
-            except:
-                value = getattr(o, field)
-            row[field] = value
+            row[field] = str(getattr(o, field)).decode('cp1252').encode('utf-8')
         data[o.aa] = row
 
     retVal = simplejson.dumps(data)
@@ -139,27 +140,49 @@ def save(request):
         next_year = this_year+1
 
         if now.month > 1 and now.month < 9:
+            #end_date = datetime.datetime(year=this_year, month=11, day=1).strftime('%Y-%m-%d')
             end_date = datetime.datetime(year=this_year, month=11, day=1)
         elif now.month > 8:
+            #end_date = datetime.datetime(year=next_year, month=04, day=1).strftime('%Y-%m-%d')
             end_date = datetime.datetime(year=next_year, month=04, day=1)
         else:
+            #end_date = datetime.datetime(year=this_year, month=04, day=1).strftime('%Y-%m-%d')
             end_date = datetime.datetime(year=this_year, month=04, day=1)
 
         # instantiate our session
         session = get_session(EARL)
         # update else insert
         for code in [MIS1, MIS2, MIS3, ENS, ICE, ICE2]:
-            code["beg_date"] = now
-            code["end_date"] = end_date
-            try:
-                obj = session.query(AARec).filter_by(id=cid).\
-                    filter_by(aa = code["aa"]).one()
+            #code["beg_date"] = datetime.datetime.now().strftime('%Y-%m-%d')
+            #code["end_date"] = end_date
+            sql = 'SELECT * FROM aa_rec WHERE aa = "{}" AND id={}'.format(
+                code['aa'], cid
+            )
+            #logger.debug("select sql = {}".format(sql))
+            obj = session.execute(sql).fetchone()
+            if obj:
+                sql = 'UPDATE aa_rec SET '
                 for key, value in code.iteritems():
-                    setattr(obj, key, value)
-            except:
+                    if key != 'aa':
+                        sql += '{} = "{}",'.format(key, value)
+                sql += 'beg_date = TODAY, end_date = ADD_MONTHS(TODAY,6) '
+                sql += 'WHERE aa = "{}" and id={}'.format(
+                    code['aa'], cid
+                )
+                #logger.debug("update sql = {}".format(sql))
+                session.execute(sql)
+            else:
                 code["id"] = cid
+                code["beg_date"] = now
+                code["end_date"] = end_date
+                #logger.debug("code = {}".format(code))
                 a = AARec(**code)
-                session.add(a)
+                #logger.debug("a = {}".format(a))
+                try:
+                    session.add(a)
+                except Exception as e:
+                    #logger.debug("error = {}".format(sys.exc_info()[0]))
+                    logger.debug("errors = {} {}".format(e.message, e.args))
 
         # medical forms data?
         if djsani:
