@@ -79,7 +79,7 @@ function makeDialog() {
         buttons: { "Save": function(){
             if(isValid() && !isNaN(GetUserID())) {
                 var subdomain = getSubdomain();
-                var earl = "https://" + subdomain + ".carthage.edu/emergency/contact/save?cid="+GetUuid()+"&callback=?";
+                var earl = "https://" + subdomain + ".carthage.edu/emergency/contact/save?uid="+GetUuid()+"&callback=?";
                 $.getJSON(earl, {
                     MIS1_NAME: $("#MIS1_NAME").val(),
                     MIS1_REL: $("#MIS1_REL").val(),
@@ -139,7 +139,7 @@ function doneRendering() {
     var subdomain = getSubdomain();
     if(!isNaN(GetUserID())) {
         $.ajax({
-            url:'https://' + subdomain + '.carthage.edu/emergency/contact/populate/?cid='+GetUuid()+'&UserID='+GetUserID(),
+            url:'https://' + subdomain + '.carthage.edu/emergency/contact/populate/?uid='+GetUuid()+'&UserID='+GetUserID(),
             type:'GET',
             dataType:'jsonp',
             cache:false,
@@ -171,7 +171,7 @@ $(document).ready(function() {
     // jsonpCallbackString:successCallback is success equivalent,
     // and will call the returned javascript from the ajax request
     $.ajax({
-        url: 'https://' + subdomain + '.carthage.edu/emergency/contact/form/?cid='+GetUuid(),
+        url: 'https://' + subdomain + '.carthage.edu/emergency/contact/form/?uid='+GetUuid(),
         type: 'GET',
         dataType: 'jsonp',
         cache: false,

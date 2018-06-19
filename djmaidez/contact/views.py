@@ -30,7 +30,9 @@ def test(request):
     """
 
     return render(
-        request, 'contact/test.html', {'uid':settings.DEFAULT_UID}
+        request, 'contact/test.html', {
+            'uid':settings.DEFAULT_UID, 'uuid':settings.DEFAULT_UUID
+        }
     )
 
 
@@ -62,7 +64,7 @@ def form(request):
 def populate(request):
     cid = request.GET.get('UserID', '')
 
-    if cid and cid == request.user.id:
+    if cid and cid == str(request.user.id):
         session = get_session(EARL)
 
         sql = 'SELECT * FROM aa_rec WHERE aa in {} AND id="{}"'.format(
