@@ -108,7 +108,7 @@ def save(request):
     djsani = request.GET.get('DJSANI','')
     # no need to proceed if we don't have a college ID and the id
     # does not match the signed in user
-    if cid and cid == request.user.id:
+    if cid and cid == str(request.user.id):
         # missing person 1
         MIS1 = {
             'aa': 'MIS1',
