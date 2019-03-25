@@ -37,9 +37,8 @@
         <fieldset id="ens">
             <input type="hidden" name="STATUS" id="STATUS" value=""/>
             <p>
-                If we are unable to locate you or if there is a
-                campus-wide emergency, we will try to contact you
-                at the following number and address.
+                Please provide a cell phone number we can reach you at
+                for emergencies and other important college business
             </p>
             <table cellpadding="5" cellspacing="0">
                 <tr>
@@ -60,17 +59,7 @@
                                 </option>
                             {% endfor %}
                         </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Can you receive text messages at this number?
-                    </td>
-                    <td colspan="2">
-                        <input type="radio" name="ENS_SMS" id="ENS_SMS" value="1"
-                            {% if ENS.opt_out == "1" %}checked{% endif %} /> yes
-                        <input type="radio" name="ENS_SMS" id="ENS_SMS" value="0"
-                            {% if ENS.opt_out == "0" %}checked{% endif %} /> no
+                        <input type="hidden" name="ENS_SMS" id="ENS_SMS" value="1">
                     </td>
                 </tr>
                 <tr>

@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 
 @portal_auth_required(
-    group = 'SuperStaff',
     session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
 )
 def test(request):
