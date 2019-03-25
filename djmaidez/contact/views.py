@@ -17,9 +17,6 @@ import simplejson
 
 EARL = settings.INFORMIX_EARL
 
-import logging
-logger = logging.getLogger(__name__)
-
 
 @portal_auth_required(
     group = 'SuperStaff',
@@ -188,7 +185,6 @@ def save(request):
             sql = 'SELECT * FROM aa_rec WHERE aa = "{}" AND id={}'.format(
                 code['aa'], cid
             )
-            #logger.debug("select sql = {}".format(sql))
             obj = session.execute(sql).fetchone()
             if obj:
                 sql = 'UPDATE aa_rec SET '
@@ -199,19 +195,15 @@ def save(request):
                 sql += 'WHERE aa = "{}" and id={}'.format(
                     code['aa'], cid
                 )
-                #logger.debug("update sql = {}".format(sql))
                 session.execute(sql)
             else:
                 code['id'] = cid
                 code['beg_date'] = now
                 code['end_date'] = end_date
-                #logger.debug("code = {}".format(code))
                 a = AARec(**code)
-                #logger.debug("a = {}".format(a))
                 try:
                     session.add(a)
                 except Exception as e:
-                    #logger.debug("error = {}".format(sys.exc_info()[0]))
                     logger.debug("errors = {} {}".format(e.message, e.args))
 
         # medical forms data?
