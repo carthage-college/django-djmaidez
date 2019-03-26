@@ -14,6 +14,8 @@ from djmaidez.core.models import (
 import sys
 import datetime
 import simplejson
+import logging
+logger = logging.getLogger(__name__)
 
 EARL = settings.INFORMIX_EARL
 
