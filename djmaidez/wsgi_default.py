@@ -7,8 +7,6 @@ import sys
 # python
 sys.path.append('/data2/python_venv/2.7/djmaidez/lib/python2.7/')
 sys.path.append('/data2/python_venv/2.7/djmaidez/lib/python2.7/site-packages/')
-sys.path.append('/data2/python_venv/2.7/djmaidez/lib/django_projects/')
-sys.path.append('/data2/python_venv/2.7/djmaidez/lib/django-djmaidez/')
 # django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djmaidez.settings')
 os.environ.setdefault('PYTHON_EGG_CACHE', '')

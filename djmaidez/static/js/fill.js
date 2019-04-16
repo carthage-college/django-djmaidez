@@ -17,7 +17,9 @@ function changeStyle(title) {
 function getSubdomain() {
     var fqdn = window.location.host
     var subdomain = fqdn.split('.')[0]
-    if (!subdomain || subdomain == "my") {
+    if ( subdomain == "testportal") {
+        var subdomain = "hygiea";
+    } else if (!subdomain || subdomain == "my") {
         var subdomain = "www";
     }
     return subdomain;
@@ -41,11 +43,6 @@ function jsonResponcePopulate(data) {
     }
     if (data.hasOwnProperty('ENS')) {
         $("#ENS_SELF_CELL").val(data.ENS.phone);
-        if(data.ENS.opt_out == 1) {
-            $('input:radio[name=ENS_SMS]')[0].checked = true;
-        } else {
-            $('input:radio[name=ENS_SMS]')[1].checked = true;
-        }
         $("#ENS_CARRIER").val(data.ENS.cell_carrier);
         $("#ENS_EMAIL").val(data.ENS.line1);
         if (data.ENS.end_date) {
@@ -91,7 +88,7 @@ function makeDialog() {
                     MIS3_NAME: $("#MIS3_NAME").val(),
                     MIS3_PHONE1: $("#MIS3_PHONE1").val(),
                     ENS_SELF_CELL: $("#ENS_SELF_CELL").val(),
-                    ENS_SMS: $('input[name=ENS_SMS]:checked').val(),
+                    ENS_SMS: $('#ENS_SMS').val(),
                     ENS_CARRIER: $("#ENS_CARRIER").val(),
                     ENS_EMAIL: $("#ENS_EMAIL").val(),
                     ICE_NAME: $("#ICE_NAME").val(),

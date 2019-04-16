@@ -162,26 +162,15 @@ def save(request):
         next_year = this_year+1
 
         if now.month > 1 and now.month < 9:
-            #end_date = datetime.datetime(
-                #year=this_year, month=11, day=1
-            #).strftime('%Y-%m-%d')
             end_date = datetime.datetime(year=this_year, month=11, day=1)
         elif now.month > 8:
-            #end_date = datetime.datetime(
-                #year=next_year, month=04, day=1
-            #).strftime('%Y-%m-%d')
             end_date = datetime.datetime(year=next_year, month=04, day=1)
         else:
-            #end_date = datetime.datetime(
-                #year=this_year, month=04, day=1
-            #).strftime('%Y-%m-%d')
             end_date = datetime.datetime(year=this_year, month=04, day=1)
 
         # instantiate our session
         session = get_session(EARL) # update else insert
         for code in [MIS1, MIS2, MIS3, ENS, ICE, ICE2]:
-            #code['beg_date'] = datetime.datetime.now().strftime('%Y-%m-%d')
-            #code['end_date'] = end_date
             sql = 'SELECT * FROM aa_rec WHERE aa = "{}" AND id={}'.format(
                 code['aa'], cid
             )
