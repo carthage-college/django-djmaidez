@@ -88,7 +88,7 @@ function makeDialog() {
                     MIS3_NAME: $("#MIS3_NAME").val(),
                     MIS3_PHONE1: $("#MIS3_PHONE1").val(),
                     ENS_SELF_CELL: $("#ENS_SELF_CELL").val(),
-                    ENS_SMS: $('#ENS_SMS').val(),
+                    ENS_SMS: "1",
                     ENS_CARRIER: $("#ENS_CARRIER").val(),
                     ENS_EMAIL: $("#ENS_EMAIL").val(),
                     ICE_NAME: $("#ICE_NAME").val(),
