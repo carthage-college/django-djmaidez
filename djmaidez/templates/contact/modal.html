@@ -1,7 +1,7 @@
 {% spaceless %}
-<div id="main_modal" title="Update Emergency Contact Information"
+<div id="main_modal" title="Update Contact Information"
     style="display:none;">
-    <div id="ens_form" title="Update Emergency Contact Information">
+    <div id="ens_form" title="Update Contact Information">
         <div class="header">What is this about?</div>
         <fieldset id="instructions">
             <p>
@@ -37,15 +37,15 @@
         <fieldset id="ens">
             <input type="hidden" name="STATUS" id="STATUS" value=""/>
             <p>
-                Please provide a cell phone number at whichg we can reach you
-                for emergencies and other important college business
+                Please provide a cell phone number at which we can reach you
+                for important college business
             </p>
             <table cellpadding="5" cellspacing="0">
                 <tr>
-                    <td colspan="2">
+                    <td>
                         Your cell phone number
                     </td>
-                    <td colspan="2">
+                    <td>
                         <input type="text" class="phone" name="ENS_SELF_CELL"
                             id="ENS_SELF_CELL" value="{{ENS.phone}}" />
                         <select name="ENS_CARRIER" id="ENS_CARRIER">
@@ -63,10 +63,20 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <span id="asterisk">*</span>
-                        Emergency notification email
+                        <p>Your primary email address for college business is: {{user.email}}</p>
+                        <p>
+                        Please also provide your alternate non-Carthage email address.
+                        The alternate email will also be part of the Emergency Notification System,
+                        and you can use it to reset your Carthage password.
+                        </p>
                     </td>
-                    <td colspan="2">
+                </tr>
+                <tr>
+                    <td>
+                        <span id="asterisk">*</span>
+                        Alternate (non-Carthage) email
+                    </td>
+                    <td>
                         <input type="text" class="name" name="ENS_EMAIL"
                             id="ENS_EMAIL" value="{{ENS.line1}}" />
                     </td>
