@@ -2,6 +2,8 @@
 import os.path
 
 from djzbar.settings import INFORMIX_EARL_TEST as INFORMIX_EARL
+# sqlserver connection string
+MSSQL_EARL = ''
 
 DEBUG = False
 DEBUG = True
