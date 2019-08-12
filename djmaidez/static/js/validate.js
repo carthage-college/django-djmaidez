@@ -21,8 +21,13 @@ function ensEmailValidation() {
         $('#ENS_EMAIL').css('border', '3px #C33 solid');
         return false;
     } else {
-        $('#ENS_EMAIL').css('border', '3px #090 solid');
-        return true;
+        if (ensEmail.includes('carthage.edu')) {
+            $('#ENS_EMAIL').css('border', '3px #C33 solid');
+            return false;
+        } else {
+            $('#ENS_EMAIL').css('border', '3px #090 solid');
+            return true;
+        }
     }
 }
 function iceNameValidation() {
@@ -367,7 +372,7 @@ function isValid() {
     if (!ensPhoneValidation())
         errors = errors + "\nPlease check the 'contact you' phone number(s).";
     if (!ensEmailValidation())
-        errors = errors + "\nPlease check the 'contact you' email address.";
+        errors = errors + "\nPlease provide an email address, one other than your carthage.edu email.";
     if (!iceNameValidation())
         errors = errors + "\nPlease check the 'in case of emergency' name(s).";
     if (!icePhone1Validation())

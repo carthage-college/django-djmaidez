@@ -197,7 +197,7 @@ def save(request):
                 except Exception as e:
                     logger.debug("errors = {} {}".format(e.message, e.args))
 
-        # medical forms data?
+        # medical forms data
         if djsani:
             from djsani.core.utils import get_manager
             manager = get_manager(session, cid)
