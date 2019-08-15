@@ -30,7 +30,7 @@ def test(request):
     """
 
     return render(
-        request, 'contact/test.html', {
+        request, 'emergency/test.html', {
             'uid':settings.DEFAULT_UID, 'uuid':settings.DEFAULT_UUID
         }
     )
@@ -44,7 +44,7 @@ def form(request):
     Called from javascript fill.js onload
     """
 
-    t = loader.get_template('contact/modal.html')
+    t = loader.get_template('emergency/modal.html')
     data = {}
     data['mobile_carrier'] = MOBILE_CARRIER
     data['relationship'] = RELATIONSHIP
