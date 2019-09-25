@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404
 from django.core.urlresolvers import reverse_lazy
 
 from djzbar.utils.informix import get_session
+from djzbar.utils.informix import do_sql
 from djzbar.decorators.auth import portal_auth_required
 
 from djmaidez.core.models import (
@@ -72,6 +73,7 @@ def populate(request):
         )
         objs = session.execute(sql)
 
+        objs = do_sql(sql)
         data = {}
 
         for o in objs:
