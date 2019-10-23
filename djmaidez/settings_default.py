@@ -18,13 +18,14 @@ MANAGERS = ADMINS
 # databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.dummy',
-        #'HOST': '127.0.0.1',
-        #'PORT': '',
-        #'NAME': '',
-        #'ENGINE': 'django.db.backends.mysql',
-        #'USER': '',
-        #'PASSWORD': ''
+        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'django_djmaidez',
+        'NAME': 'django_djmaidez',
+        'PASSWORD': '',
+        'OPTIONS': {
+            'charset': 'utf8mb4'
+        }
     },
 }
 ALLOWED_HOSTS =  ['localhost','127.0.0.1']
