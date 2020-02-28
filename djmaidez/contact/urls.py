@@ -1,12 +1,14 @@
-from django.conf.urls import url
-from django.views.generic import TemplateView
+# -*- coding: utf-8 -*-
 
+"""URLs for all views."""
+
+from django.urls import path
 from djmaidez.contact import views
 
 
 urlpatterns = [
-    url(r'^form/$', views.form, name='form'),
-    url(r'^populate/$', views.populate, name='populate'),
-    url(r'^save/$', views.save, name='save'),
-    url(r'^test/$', views.test, name='test')
+    path('form/', views.form, name='form'),
+    path('populate/', views.populate, name='populate'),
+    path('save/', views.save, name='save'),
+    path('test/', views.test, name='test'),
 ]

@@ -1,216 +1,239 @@
-from django.conf import settings
-from django.shortcuts import render
-from django.template import Context, loader
-from django.http import HttpResponse, Http404
-from django.core.urlresolvers import reverse_lazy
+# -*- coding: utf-8 -*-
 
-from djzbar.utils.informix import get_session
-from djzbar.utils.informix import do_sql
-from djzbar.decorators.auth import portal_auth_required
+"""Views for all requests."""
 
-from djmaidez.core.models import (
-    AARec, ENS_CODES, ENS_FIELDS, MOBILE_CARRIER, RELATIONSHIP
-)
-
-import sys
 import datetime
-import simplejson
+import json
 import logging
-logger = logging.getLogger(__name__)
+import textwrap
 
-EARL = settings.INFORMIX_EARL
+from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.template import loader
+from django.urls import reverse_lazy
+from djimix.core.utils import get_connection
+from djimix.core.utils import xsql
+from djimix.decorators.auth import portal_auth_required
+from djmaidez.contact.data import ENS_CODES
+from djmaidez.contact.data import ENS_FIELDS
+from djmaidez.contact.data import MOBILE_CARRIER
+from djmaidez.contact.data import RELATIONSHIP
 
 
+error_logger = logging.getLogger('error_logfile')
+debug_logger = logging.getLogger('debug_logfile')
+
+if settings.DEBUG:
+    EARL = settings.INFORMIX_ODBC_TRAIN
+else:
+    EARL = settings.INFORMIX_ODBC
+
+
+# group='SuperStaff',
 @portal_auth_required(
-    group = 'SuperStaff',
-    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+    session_var='DJSANI_AUTH',
+    redirect_url=reverse_lazy('access_denied'),
 )
 def test(request):
-    """
-    Test the modal outside of an embedded environment
-    """
-
+    """Test the modal outside of an embedded environment."""
     return render(
         request, 'emergency/test.html', {
-            'uid':settings.DEFAULT_UID, 'uuid':settings.DEFAULT_UUID
-        }
+            'uid': settings.DEFAULT_UID, 'uuid': settings.DEFAULT_UUID,
+        },
     )
 
 
 @portal_auth_required(
-    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied'),
 )
 def form(request):
-    """
-    Called from javascript fill.js onload
-    """
-
-    t = loader.get_template('emergency/modal.html')
-    data = {}
-    data['mobile_carrier'] = MOBILE_CARRIER
-    data['relationship'] = RELATIONSHIP
-    page = t.render(data, request)
-    json = {'emc':page}
-    page = simplejson.dumps(json)
+    """Called from javascript fill.js onload."""
+    template = loader.get_template('emergency/modal.html')
+    context_data = {}
+    context_data['mobile_carrier'] = MOBILE_CARRIER
+    context_data['relationship'] = RELATIONSHIP
+    page = template.render(context_data, request)
+    page = json.dumps({'emc': page})
 
     return HttpResponse(
-        'successCallback(' + page + ')',
-        content_type='application/json; charset=utf-8'
+        'successCallback({0})'.format(page),
+        content_type='application/json; charset=utf-8',
     )
 
 
 @portal_auth_required(
-    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied'),
 )
 def populate(request):
+    """Obtain the emergency contacts for display in the form."""
     cid = request.GET.get('UserID', '')
-
-    if cid and cid == str(request.user.id):
-        session = get_session(EARL)
-
-        sql = 'SELECT * FROM aa_rec WHERE aa in {} AND id="{}"'.format(
-            ENS_CODES, cid
+    return_val = ''
+    # prevent nefarious deeds and sql injection
+    if cid and cid == str(request.user.id) or request.user.is_superuser:
+        sql = 'SELECT * FROM aa_rec WHERE aa in {0} AND id="{1}"'.format(
+            ENS_CODES, cid,
         )
-        objs = session.execute(sql)
+        with get_connection(EARL) as connection:
+            rows = xsql(sql, connection).fetchall()
+            ens_data = {}
 
-        objs = do_sql(sql)
-        data = {}
+            for row in rows:
+                contact = {}
+                for field in ENS_FIELDS:
+                    if isinstance(getattr(row, field), datetime.date):
+                        field_val = getattr(row, field)
+                    else:
+                        field_val = getattr(row, field).strip()
+                    contact[field] = field_val
 
-        for o in objs:
-            row = {}
-            for field in ENS_FIELDS:
-                row[field] = str(
-                    getattr(o, field)
-                ).decode('cp1252').encode('utf-8')
-            data[o.aa] = row
-
-        retVal = simplejson.dumps(data)
-
-        session.close()
-
-        return HttpResponse(
-            'jsonResponcePopulate(' + retVal + ')',
-            content_type='application/json; charset=utf-8'
-        )
-    else:
-        raise Http404
+                ens_data[row.aa.strip()] = contact
+            # the encoder is needed for date values
+            return_val = json.dumps(ens_data, cls=DjangoJSONEncoder)
+    debug_logger.debug(return_val)
+    return HttpResponse(
+        'jsonResponcePopulate({0})'.format(return_val),
+        content_type='application/json; charset=utf-8',
+    )
 
 
 @portal_auth_required(
-    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied')
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied'),
 )
 def save(request):
-    """
-    Called from jquery ui modal construction. .getJSON in buttons.
-    """
-
+    """Called from jquery ui modal construction. .getJSON in buttons."""
     # college ID
     cid = request.GET.get('UserID', '')
     # did the data come from medical forms project?
-    djsani = request.GET.get('DJSANI','')
+    djsani = request.GET.get('DJSANI', '')
+    # default return message
+    message = 'saveDone({"Status":"Failed"})'
     # no need to proceed if we don't have a college ID and the id
-    # does not match the signed in user
+    # does not match the signed in user (also prevents sql injection)
     if cid and cid == str(request.user.id):
         # missing person 1
-        MIS1 = {
+        mis1 = {
             'aa': 'MIS1',
             'line1': request.GET.get('MIS1_NAME', ''),
-            'cell_carrier': request.GET.get('MIS1_REL', ''),
-            'phone': request.GET.get('MIS1_PHONE1', ''),
             'line2': request.GET.get('MIS1_PHONE2', ''),
-            'line3': request.GET.get('MIS1_PHONE3', '')
+            'line3': request.GET.get('MIS1_PHONE3', ''),
+            'phone': request.GET.get('MIS1_PHONE1', ''),
+            'cell_carrier': request.GET.get('MIS1_REL', ''),
         }
         # missing person 2
-        MIS2 = {
+        mis2 = {
             'aa': 'MIS2',
             'line1': request.GET.get('MIS2_NAME', ''),
-            'phone': request.GET.get('MIS2_PHONE1', '')
+            'line2': '',
+            'line3': '',
+            'phone': request.GET.get('MIS2_PHONE1', ''),
+            'cell_carrier': '',
         }
         # missing person 3
-        MIS3 = {
+        mis3 = {
             'aa': 'MIS3',
             'line1': request.GET.get('MIS3_NAME', ''),
-            'phone': request.GET.get('MIS3_PHONE1', '')
-
+            'line2': '',
+            'line3': '',
+            'phone': request.GET.get('MIS3_PHONE1', ''),
+            'cell_carrier': '',
         }
         # emergency notification system
-        ENS = {
+        ens = {
             'aa': 'ENS',
-            'opt_out': request.GET.get('ENS_SMS', ''),
+            'line1': request.GET.get('ENS_EMAIL', ''),
+            'line2': '',
+            'line3': '',
             'phone': request.GET.get('ENS_SELF_CELL', ''),
             'cell_carrier': request.GET.get('ENS_CARRIER', ''),
-            'line1': request.GET.get('ENS_EMAIL', '')
         }
         # in case of emergency 1
-        ICE = {
+        ice = {
             'aa': 'ICE',
             'line1': request.GET.get('ICE_NAME', ''),
-            'phone': request.GET.get('ICE_PHONE1', ''),
             'line2': request.GET.get('ICE_PHONE2', ''),
             'line3': request.GET.get('ICE_PHONE3', ''),
-            'cell_carrier': request.GET.get('ICE_REL', '')
+            'phone': request.GET.get('ICE_PHONE1', ''),
+            'cell_carrier': request.GET.get('ICE_REL', ''),
         }
         # in case of emergency 2
-        ICE2 = {
+        ice2 = {
             'aa': 'ICE2',
             'line1': request.GET.get('ICE2_NAME', ''),
-            'phone': request.GET.get('ICE2_PHONE1', ''),
             'line2': request.GET.get('ICE2_PHONE2', ''),
             'line3': request.GET.get('ICE2_PHONE3', ''),
-            'cell_carrier': request.GET.get('ICE2_REL', '')
+            'phone': request.GET.get('ICE2_PHONE1', ''),
+            'cell_carrier': request.GET.get('ICE2_REL', ''),
         }
 
         # begin and end dates
         now = datetime.datetime.now()
         this_year = now.year
-        next_year = this_year+1
+        next_year = this_year + 1
 
         if now.month > 1 and now.month < 9:
             end_date = datetime.datetime(year=this_year, month=11, day=1)
         elif now.month > 8:
-            end_date = datetime.datetime(year=next_year, month=04, day=1)
+            end_date = datetime.datetime(year=next_year, month=4, day=1)
         else:
-            end_date = datetime.datetime(year=this_year, month=04, day=1)
+            end_date = datetime.datetime(year=this_year, month=4, day=1)
 
-        # instantiate our session
-        session = get_session(EARL) # update else insert
-        for code in [MIS1, MIS2, MIS3, ENS, ICE, ICE2]:
-            sql = 'SELECT * FROM aa_rec WHERE aa = "{}" AND id={}'.format(
-                code['aa'], cid
-            )
-            obj = session.execute(sql).fetchone()
-            if obj:
-                sql = 'UPDATE aa_rec SET '
-                for key, value in code.iteritems():
-                    if key != 'aa':
-                        sql += '{} = "{}",'.format(key, value)
-                sql += 'beg_date = TODAY, end_date = ADD_MONTHS(TODAY,6) '
-                sql += 'WHERE aa = "{}" and id={}'.format(
-                    code['aa'], cid
+        with get_connection(EARL) as connection:
+            # used for inserts
+            cursor = connection.cursor()
+            for code in (mis1, mis2, mis3, ens, ice, ice2):
+                sql = 'SELECT * FROM aa_rec WHERE aa = "{0}" AND id={1}'.format(
+                    code['aa'], cid,
                 )
-                session.execute(sql)
-            else:
-                code['id'] = cid
-                code['beg_date'] = now
-                code['end_date'] = end_date
-                a = AARec(**code)
-                try:
-                    session.add(a)
-                except Exception as e:
-                    logger.debug("errors = {} {}".format(e.message, e.args))
+                ens_obj = xsql(sql, connection).fetchone()
+                if ens_obj:
+                    sql = 'UPDATE aa_rec SET '
+                    for key, data_value in code.items():
+                        if key != 'aa':
+                            sql += '{0} = "{1}",'.format(key, data_value)
+                    sql += 'beg_date = TODAY, end_date = ADD_MONTHS(TODAY,6) '
+                    sql += 'WHERE aa = "{0}" and id={1}'.format(
+                        code['aa'], cid,
+                    )
+                    xsql(sql, connection)
+                else:
+                    code['id'] = cid
+                    code['beg_date'] = now
+                    code['end_date'] = end_date
+                    columns = ', '.join(clave for clave in code.keys())
+                    insert_sql = textwrap.dedent("""
+                        INSERT INTO aa_rec (
+                            {0}
+                        ) VALUES (
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        )
+                        """.format(columns),
+                    )
+                    try:
+                        cursor.execute(insert_sql, list(code.values()))
+                    except Exception as error:
+                        error_logger.error(error, code)
 
-        # medical forms data
-        if djsani:
-            from djsani.core.utils import get_manager
-            manager = get_manager(session, cid)
-            manager.emergency_contact=True
+            # medical forms data
+            if djsani:
+                now = datetime.datetime.now()
+                year = now.year
+                if now.month < 6:
+                    year = now.year - 1
+                sql_man = """
+                    UPDATE
+                        cc_student_medical_manager
+                    SET
+                        emergency_contact = 1
+                    WHERE
+                        id = {0}
+                    AND
+                        created_at > {1}
+                """.format(cid, datetime.datetime(year, 6, 1))
+                manager = xsql(sql_man, connection)
+                manager.emergency_contact = True
 
-        session.commit()
-        session.close()
+            message = 'saveDone({"Status":"Success"})'
 
-        return HttpResponse(
-            'saveDone({"Status":"Success"})',
-            content_type='application/json; charset=utf-8'
-        )
-    else:
-        raise Http404
+    return HttpResponse(message, content_type='application/json; charset=utf-8')

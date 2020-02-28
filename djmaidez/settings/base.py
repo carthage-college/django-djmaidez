@@ -46,7 +46,7 @@ USE_I18N = True
 USE_L10N = True
 DEFAULT_CHARSET = 'utf-8'
 FILE_CHARSET = 'utf-8'
-ROOT_URLCONF = 'djmaidez.core.urls'
+ROOT_URLCONF = 'djmaidez.urls'
 SERVER_URL = 'www.carthage.edu'
 API_URL = '{0}/{1}'.format(SERVER_URL, 'api')
 LIVEWHALE_API_URL = 'https://{0}'.format(SERVER_URL)
@@ -92,7 +92,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(os.path.dirname(__file__), 'templates'),
-            '/data2/django_templates/djkorra/',
             '/data2/django_templates/djcher/',
             '/data2/django_templates/',
         ],
@@ -152,24 +151,6 @@ AUTHENTICATION_BACKENDS = (
     'djauth.ldapBackend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
 LOGIN_URL = '{0}accounts/login/'.format(ROOT_URL)
 LOGOUT_URL = '{0}accounts/logout/'.format(ROOT_URL)
 LOGIN_REDIRECT_URL = '{0}dashboard/'.format(ROOT_URL)
@@ -233,6 +214,7 @@ LOGGING = {
     },
     'loggers': {
         'custom_logfile': {
+            'handlers': ['logfile'],
             'level': 'ERROR',
             'filters': ['require_debug_true'],  # don't run logger in production
             'class': 'logging.FileHandler',
@@ -240,6 +222,7 @@ LOGGING = {
             'formatter': 'custom',
         },
         'info_logfile': {
+            'handlers': ['logfile'],
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'backupCount': 10,
@@ -249,12 +232,14 @@ LOGGING = {
             'formatter': 'simple',
         },
         'debug_logfile': {
+            'handlers': ['logfile'],
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': DEBUG_LOG_FILENAME,
             'formatter': 'verbose',
         },
         'error_logfile': {
+            'handlers': ['logfile'],
             'level': 'ERROR',
             'filters': ['require_debug_true'],  # don't run logger in production
             'class': 'logging.FileHandler',
