@@ -85,7 +85,9 @@ def populate(request):
                     if isinstance(getattr(row, field), datetime.date):
                         field_val = getattr(row, field)
                     else:
-                        field_val = getattr(row, field).strip()
+                        field_val = getattr(row, field)
+                        if field_val:
+                            field_val = field_val.strip()
                     contact[field] = field_val
 
                 ens_data[row.aa.strip()] = contact

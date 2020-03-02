@@ -17,7 +17,7 @@ from djimix.settings.local import ODBCINI
 from djimix.settings.local import ONCONFIG
 
 
-DEBUG = True
+DEBUG = False
 INFORMIX_DEBUG = False
 REQUIRED_ATTRIBUTE = True
 ADMINS = (
