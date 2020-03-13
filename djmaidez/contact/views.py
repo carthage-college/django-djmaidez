@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from djimix.core.utils import get_connection
 from djimix.core.utils import xsql
 from djimix.decorators.auth import portal_auth_required
-from djmaidez.contact.data import ENS_CODES
+from djmaidez.contact.data import AA_REC
 from djmaidez.contact.data import ENS_FIELDS
 from djmaidez.contact.data import MOBILE_CARRIER
 from djmaidez.contact.data import RELATIONSHIP
@@ -72,9 +72,7 @@ def populate(request):
     return_val = ''
     # prevent nefarious deeds and sql injection
     if cid and cid == str(request.user.id) or request.user.is_superuser:
-        sql = 'SELECT * FROM aa_rec WHERE aa in {0} AND id="{1}"'.format(
-            ENS_CODES, cid,
-        )
+        sql = '{0} AND id="{1}"'.format(AA_REC, cid)
         with get_connection(EARL) as connection:
             rows = xsql(sql, connection).fetchall()
             ens_data = {}

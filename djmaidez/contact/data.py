@@ -131,3 +131,25 @@ RELATIONSHIP = (
     ('AUNN', 'Aunt/Uncle'),
     ('OTHR', 'Other'),
 )
+
+AA_REC = """
+SELECT
+    id,
+    TRIM(aa) as aa,
+    beg_date,
+    end_date,
+    TRIM(line1) as line1,
+    TRIM(line2) as line2,
+    TRIM(line3) as line3,
+    TRIM(city) as city,
+    TRIM(zip) as zip,
+    TRIM(ctry) as ctry,
+    TRIM(phone) as phone,
+    TRIM(phone_ext) as phone_ext,
+    TRIM(cell_carrier) as cell_carrier,
+    opt_out
+FROM
+    aa_rec
+WHERE
+    aa in ('MIS1', 'MIS2', 'MIS3', 'ENS', 'ICE', 'ICE2')
+"""
