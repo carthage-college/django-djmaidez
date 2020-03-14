@@ -91,7 +91,6 @@ def populate(request):
                 ens_data[row.aa.strip()] = contact
             # the encoder is needed for date values
             return_val = json.dumps(ens_data, cls=DjangoJSONEncoder)
-    debug_logger.debug(return_val)
     return HttpResponse(
         'jsonResponcePopulate({0})'.format(return_val),
         content_type='application/json; charset=utf-8',
@@ -227,12 +226,11 @@ def save(request):
                     SET
                         emergency_contact = 1
                     WHERE
-                        id = {0}
+                        college_id = {0}
                     AND
-                        created_at > {1}
+                        created_at > "{1}"
                 """.format(cid, datetime.datetime(year, 6, 1))
-                manager = xsql(sql_man, connection)
-                manager.emergency_contact = True
+                xsql(sql_man, connection)
 
             message = 'saveDone({"Status":"Success"})'
 
