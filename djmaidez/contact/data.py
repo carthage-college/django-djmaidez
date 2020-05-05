@@ -30,6 +30,7 @@ MOBILE_CARRIER = (
     ('3', 'U.S Cellular'),
     ('4', 'Boost Mobile'),
     ('5', 'Cricket'),
+    ('95', 'Spectrum'),
     ('6', 'Sprint PCS'),
     ('7', 'T-Mobile'),
     ('8', 'Virgin Mobile'),
