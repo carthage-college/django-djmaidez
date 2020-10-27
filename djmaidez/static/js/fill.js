@@ -20,7 +20,7 @@ function getSubdomain() {
     if ( subdomain == "testportal") {
         var subdomain = "hygiea";
     } else if (!subdomain || subdomain == "my") {
-        var subdomain = "www";
+        var subdomain = "my";
     }
     return subdomain;
 }
