@@ -13,9 +13,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse_lazy
+from djauth.decorators import portal_auth_required
 from djimix.core.utils import get_connection
 from djimix.core.utils import xsql
-from djimix.decorators.auth import portal_auth_required
 from djmaidez.contact.data import AA_REC
 from djmaidez.contact.data import ENS_FIELDS
 from djmaidez.contact.data import MOBILE_CARRIER
@@ -31,10 +31,8 @@ else:
     EARL = settings.INFORMIX_ODBC
 
 
-# group='SuperStaff',
 @portal_auth_required(
-    session_var='DJSANI_AUTH',
-    redirect_url=reverse_lazy('access_denied'),
+    session_var='DJSANI_AUTH', redirect_url=reverse_lazy('access_denied'),
 )
 def test(request):
     """Test the modal outside of an embedded environment."""
