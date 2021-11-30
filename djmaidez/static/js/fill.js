@@ -76,7 +76,7 @@ function makeDialog() {
         buttons: { "Save": function(){
             if(isValid() && !isNaN(GetUserID())) {
                 var subdomain = getSubdomain();
-                var earl = "https://" + subdomain + ".carthage.edu/emergency/contact/save?uid="+GetUuid()+"&callback=?";
+                var earl = "https://" + subdomain + ".carthage.edu/djmaidez/contact/save?uid="+GetUuid()+"&callback=?";
                 $.getJSON(earl, {
                     MIS1_NAME: $("#MIS1_NAME").val(),
                     MIS1_REL: $("#MIS1_REL").val(),
@@ -136,7 +136,7 @@ function doneRendering() {
     var subdomain = getSubdomain();
     if(!isNaN(GetUserID())) {
         $.ajax({
-            url:'https://' + subdomain + '.carthage.edu/emergency/contact/populate/?uid='+GetUuid()+'&UserID='+GetUserID(),
+            url:'https://' + subdomain + '.carthage.edu/djmaidez/contact/populate/?uid='+GetUuid()+'&UserID='+GetUserID(),
             type:'GET',
             dataType:'jsonp',
             cache:false,
@@ -163,12 +163,12 @@ function successCallback(data) {
 $(document).ready(function() {
     var subdomain = getSubdomain();
     $.getScript("https://www.carthage.edu/static/vendor/jquery/plugins/maskedinput/dist/jquery.maskedinput.min.js", function(){ });
-    $.getScript("https://" + subdomain + ".carthage.edu/static/emergency/js/validate.js", function(){ });
+    $.getScript("https://" + subdomain + ".carthage.edu/static/djmaidez/js/validate.js", function(){ });
     // JSONP call to get the form and button from Django
     // jsonpCallbackString:successCallback is success equivalent,
     // and will call the returned javascript from the ajax request
     $.ajax({
-        url: 'https://' + subdomain + '.carthage.edu/emergency/contact/form/?uid='+GetUuid(),
+        url: 'https://' + subdomain + '.carthage.edu/djmaidez/contact/form/?uid='+GetUuid(),
         type: 'GET',
         dataType: 'jsonp',
         cache: false,
