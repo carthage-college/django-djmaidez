@@ -23,7 +23,6 @@ from djmaidez.contact.data import RELATIONSHIP
 
 
 error_logger = logging.getLogger('error_logfile')
-debug_logger = logging.getLogger('debug_logfile')
 
 if settings.DEBUG:
     EARL = settings.INFORMIX_ODBC_TRAIN
@@ -167,11 +166,19 @@ def save(request):
         eml4 = {
             'aa': 'EML4',
             'line1': request.GET.get('EML4_EMAIL', ''),
+            'line2': '',
+            'line3': '',
+            'phone': '',
+            'cell_carrier': '',
         }
         # parent/guardian phone
         cllp = {
             'aa': 'CLLP',
             'line1': request.GET.get('CLLP_PHONE', ''),
+            'line2': '',
+            'line3': '',
+            'phone': '',
+            'cell_carrier': '',
         }
 
         # begin and end dates

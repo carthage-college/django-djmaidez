@@ -249,7 +249,6 @@ LOGGING = {
         'error_logfile': {
             'handlers': ['logfile'],
             'level': 'ERROR',
-            'filters': ['require_debug_true'],  # don't run logger in production
             'class': 'logging.FileHandler',
             'filename': ERROR_LOG_FILENAME,
             'formatter': 'verbose',
