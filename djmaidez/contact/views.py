@@ -163,6 +163,16 @@ def save(request):
             'phone': request.GET.get('ICE2_PHONE1', ''),
             'cell_carrier': request.GET.get('ICE2_REL', ''),
         }
+        # parent/guardian email
+        eml4 = {
+            'aa': 'EML4',
+            'line1': request.GET.get('EML4_EMAIL', ''),
+        }
+        # parent/guardian phone
+        cllp = {
+            'aa': 'CLLP',
+            'line1': request.GET.get('CLLP_PHONE', ''),
+        }
 
         # begin and end dates
         now = datetime.datetime.now()
@@ -179,7 +189,7 @@ def save(request):
         with get_connection(EARL) as connection:
             # used for inserts
             cursor = connection.cursor()
-            for code in (mis1, mis2, mis3, ens, ice, ice2):
+            for code in (mis1, mis2, mis3, ens, ice, ice2, eml4, cllp):
                 sql = 'SELECT * FROM aa_rec WHERE aa = "{0}" AND id={1}'.format(
                     code['aa'], cid,
                 )
