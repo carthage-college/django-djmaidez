@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djmaidez',
+    'djtools',
 )
 # LDAP Constants
 LDAP_SERVER = ''
