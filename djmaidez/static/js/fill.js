@@ -117,9 +117,6 @@ function makeDialog() {
                     ICE2_PHONE3: $("#ICE2_PHONE3").val(),
                     ICE2_REL: $("#ICE2_REL").val()
                 });
-            } else {
-                console.log('not valid binch');
-                console.log($("#CLLP_PHONE").val());
             }
         }}
     });
