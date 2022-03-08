@@ -38,6 +38,9 @@ fieldset {
 p {
     margin:0 0 .5em 0;
 }
+#ens_form fieldset {
+    height: inherit !important;
+}
 #instructions p, #instructions li {
     font-size:110%;
 }

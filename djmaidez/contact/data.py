@@ -152,5 +152,5 @@ SELECT
 FROM
     aa_rec
 WHERE
-    aa in ('MIS1', 'MIS2', 'MIS3', 'ENS', 'ICE', 'ICE2')
+    aa in ('MIS1', 'MIS2', 'MIS3', 'ENS', 'ICE', 'ICE2', 'EML4', 'CLLP')
 """

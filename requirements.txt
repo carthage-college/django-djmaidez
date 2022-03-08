@@ -1,10 +1,7 @@
-django==2.2.24
-mysqlclient==1.4.6
-python-memcached==1.59
-python-ldap==3.1.0
-pyodbc==4.0.28
-python-ldap==3.2.0
-pycryptodome==3.9.4
-cryptography==3.2
-requests==2.23.0
-wemake-python-styleguide==0.13.3
+django==3.2.12
+mysqlclient>=2.1.0
+python-memcached>=1.59
+pyodbc>=4.0.32
+python-ldap>=3.4.0
+cryptography>=36.0.1
+requests>=2.27.1

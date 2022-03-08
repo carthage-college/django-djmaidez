@@ -52,6 +52,30 @@ function icePhone1Validation() {
         return true;
     }
 }
+// parent/guardian phone
+function cllpPhoneValidation() {
+    var cllpPhone = $('#CLLP_PHONE').val();
+    var trimPhone = numbersOnly(cllpPhone);
+    if (trimPhone && trimPhone.length < 10) {
+        $('#CLLP_PHONE').css('border', '3px #C33 solid');
+        return false;
+    } else {
+        $('#CLLP_PHONE').css('border', '3px #090 solid');
+        return true;
+    }
+}
+// parent/guardian email
+function eml4EmailValidation() {
+    var eml4Email = $('#EML4_EMAIL').val();
+    var emailfilter = /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/;
+    if (eml4Email && !emailfilter.test(eml4Email)) {
+        $('#EML4_EMAIL').css('border', '3px #C33 solid');
+        return false;
+    } else {
+        $('#EML4_EMAIL').css('border', '3px #090 solid');
+        return true;
+    }
+}
 function icePhone2Validation() {
     var icePhone2 = $('#ICE_PHONE2').val();
     if(icePhone2.length == 0) {
@@ -326,6 +350,9 @@ function initializeHandlers() {
     $('#ICE2_PHONE2').mask("899-999-9999");
     $('#ICE2_PHONE3').blur(ice2Phone3Validation);
     $('#ENS_SELF_CELL').mask("899-999-9999");
+    $('#CLLP_PHONE').blur(cllpPhoneValidation);
+    $('#CLLP_PHONE').mask("899-999-9999");
+    $('#EML4_EMAIL').blur(eml4EmailValidation);
     $('#MIS1_NAME').blur(mis1NameValidation);
     $('#MIS1_PHONE1').blur(mis1Phone1Validation);
     $('#MIS1_PHONE1').mask("899-999-9999");
@@ -345,6 +372,8 @@ function initializeHandlers() {
 function initialvalidation() {
     ensPhoneValidation();
     ensEmailValidation();
+    cllpPhoneValidation();
+    eml4EmailValidation;
     iceNameValidation();
     icePhone1Validation();
     icePhone2Validation();
@@ -389,26 +418,29 @@ function isValid() {
         errors = errors + "\nPlease check the 'in case of emergency' phone number(s).";
     if (!ice2Phone3Validation())
         errors = errors + "\nPlease check the 'in case of emergency' phone number(s).";
-
     //ONLY FOR STUDENTS
     if(GetUserType() == "student") {
         if(!mis1NameValidation())
-        errors = errors + "\nPlease check the 'in case of missing' names(s).";
+            errors = errors + "\nPlease check the 'in case of missing' names(s).";
         if(!mis1Phone1Validation())
-        errors = errors + "\nPlease check the 'in case of missing' phone number 1.";
+            errors = errors + "\nPlease check the 'in case of missing' phone number 1.";
         if(!mis1Phone2Validation())
-        errors = errors + "\nPlease check the 'in case of missing' phone number 2.";
+            errors = errors + "\nPlease check the 'in case of missing' phone number 2.";
         if(!mis1Phone3Validation())
-        errors = errors + "\nPlease check the 'in case of missing' phone number 3.";
+            errors = errors + "\nPlease check the 'in case of missing' phone number 3.";
         if(!mis2Phone1Validation())
-        errors = errors + "\nPlease check the 'in case of missing' contact 2 phone number.";
+            errors = errors + "\nPlease check the 'in case of missing' contact 2 phone number.";
         if(!mis2NameValidation())
-        errors = errors + "\nPlease check the 'in case of missing' contact 2 name.";
+            errors = errors + "\nPlease check the 'in case of missing' contact 2 name.";
         if(!mis3Phone1Validation())
-        errors = errors + "\nPlease check the 'in case of missing' contact 3 phone number.";
+            errors = errors + "\nPlease check the 'in case of missing' contact 3 phone number.";
         if(!mis3NameValidation())
-        errors = errors + "\nPlease check the 'in case of missing' contact 3 name.";
-    }
+            errors = errors + "\nPlease check the 'in case of missing' contact 3 name.";
+        if (!cllpPhoneValidation())
+            errors = errors + "\nPlease check the Parent/Guardian phone number.";
+        if (!eml4EmailValidation())
+            errors = errors + "\nPlease check the Parent/Guardian email address.";
+        }
 
     if (errors != "") {
         alert(errors);
